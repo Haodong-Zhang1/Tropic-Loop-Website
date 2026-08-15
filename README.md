@@ -2,6 +2,8 @@
 
 Tropic Loop is a bilingual, Chinese-first student guide for learning, living and finding opportunities across North Queensland. The current release starts with Cairns and is designed to expand to Townsville without presenting itself as an official university product.
 
+Public site: [https://tropicloop.com](https://tropicloop.com)
+
 ## What is included
 
 - Chinese and English interface switching
@@ -31,6 +33,13 @@ npm test
 npm run build
 npm run test:sites
 ```
+
+## Update and publish
+
+- Edit bilingual copy, weekly highlights, courses and service entries in `src/data/content.js`.
+- Add interface or page changes under `src/` and keep image attribution in `IMAGE_SOURCES.md`.
+- Push the validated `main` branch to GitHub. The Pages workflow runs the tests, builds the site and updates `https://tropicloop.com` automatically.
+- Domain and DNS configuration are persistent and do not need to be repeated for normal content updates.
 
 ## Project structure
 
