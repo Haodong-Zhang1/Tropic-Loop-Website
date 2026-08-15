@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, List, WaveSine, X } from "@phosphor-icons/react";
 import { copy, navigation } from "./data/content.js";
-import { routeIdForPath, normalizePath } from "./router.js";
+import {
+  browserPathForRoute,
+  normalizePath,
+  routeIdForPath,
+  routePathFromBrowserPath,
+} from "./router.js";
 import { HomePage } from "./pages/HomePage.jsx";
 import { LifePage } from "./pages/LifePage.jsx";
 import { OpportunitiesPage } from "./pages/OpportunitiesPage.jsx";
 import { StudyPage } from "./pages/StudyPage.jsx";
 
 export function App() {
+  const basePath = import.meta.env.BASE_URL;
   const [locale, setLocale] = useState("zh");
-  const [path, setPath] = useState(() => normalizePath(window.location.pathname));
+  const [path, setPath] = useState(() => routePathFromBrowserPath(window.location.pathname, basePath));
   const [menuOpen, setMenuOpen] = useState(false);
   const text = copy[locale];
   const routeId = routeIdForPath(path);
 
   useEffect(() => {
     const handlePopState = () => {
-      setPath(normalizePath(window.location.pathname));
+      setPath(routePathFromBrowserPath(window.location.pathname, basePath));
       setMenuOpen(false);
       window.scrollTo({ top: 0 });
     };
@@ -27,7 +33,7 @@ export function App() {
   const navigate = (nextPath) => {
     const normalized = normalizePath(nextPath);
     if (normalized !== path) {
-      window.history.pushState({}, "", normalized);
+      window.history.pushState({}, "", browserPathForRoute(normalized, basePath));
       setPath(normalized);
     }
     setMenuOpen(false);
@@ -47,20 +53,20 @@ export function App() {
         <div className="header-inner">
           <a
             className="brand"
-            href="/"
+            href={browserPathForRoute("/", basePath)}
             onClick={(event) => {
               event.preventDefault();
               navigate("/");
             }}
           >
             <WaveSine size={46} weight="regular" aria-hidden="true" />
-            <span>Cairns Loop</span>
+            <span>Tropic Loop</span>
           </a>
 
           <nav className="desktop-nav" aria-label={locale === "zh" ? "主导航" : "Primary navigation"}>
             {navigation.map((item) => (
               <a
-                href={item.path}
+                href={browserPathForRoute(item.path, basePath)}
                 aria-current={routeId === item.id ? "page" : undefined}
                 className={routeId === item.id ? "active" : ""}
                 key={item.id}
@@ -100,7 +106,7 @@ export function App() {
           <nav className="mobile-nav" aria-label={locale === "zh" ? "移动端导航" : "Mobile navigation"}>
             {navigation.map((item) => (
               <a
-                href={item.path}
+                href={browserPathForRoute(item.path, basePath)}
                 aria-current={routeId === item.id ? "page" : undefined}
                 className={routeId === item.id ? "active" : ""}
                 key={item.id}
@@ -122,7 +128,7 @@ export function App() {
       <footer>
         <p>{text.disclaimer}</p>
         <div>
-          <span>Cairns · Australia</span>
+          <span>{locale === "zh" ? "凯恩斯首发 · 北昆士兰" : "Cairns edition · North Queensland"}</span>
           <span aria-hidden="true">|</span>
           <time dateTime="2026-08-15">15 August 2026</time>
         </div>

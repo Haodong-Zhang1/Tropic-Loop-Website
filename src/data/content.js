@@ -27,10 +27,10 @@ export const imageSources = {
 export const copy = {
   zh: {
     home: {
-      eyebrow: "YOUR CAIRNS STUDENT HUB",
-      headline: "在 JCU 学习，\n也在凯恩斯生活。",
+      eyebrow: "YOUR NORTH QUEENSLAND STUDENT HUB",
+      headline: "在 JCU 学习，\n也在北昆士兰生活。",
       promise: "课程、生活与机会，一处找到。",
-      intro: "为在凯恩斯学习的中国与国际学生，整理真正有用的本地信息。",
+      intro: "从凯恩斯首发，逐步扩展到汤斯维尔，为中国与国际学生整理真正有用的本地信息。",
       weekly: "本周重点",
       exploreTitle: "本周去看看",
       exploreIntro: "从真实校园出发，继续探索生活与机会页面。",
@@ -73,10 +73,10 @@ export const copy = {
   },
   en: {
     home: {
-      eyebrow: "YOUR CAIRNS STUDENT HUB",
-      headline: "Study at JCU.\nLive in Cairns.",
+      eyebrow: "YOUR NORTH QUEENSLAND STUDENT HUB",
+      headline: "Study at JCU.\nLive in North Queensland.",
       promise: "Courses, local life and opportunities — in one place.",
-      intro: "Useful local information, organised for Chinese and international students studying in Cairns.",
+      intro: "Starting in Cairns and expanding to Townsville, with useful local information for Chinese and international students.",
       weekly: "This week",
       exploreTitle: "Explore this week",
       exploreIntro: "Start with the real campus, then continue into Life and Opportunities.",

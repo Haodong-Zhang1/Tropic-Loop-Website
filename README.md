@@ -1,6 +1,6 @@
-# Cairns Loop
+# Tropic Loop
 
-Cairns Loop is a bilingual, Chinese-first student guide for learning, living and finding opportunities in Cairns. This repository contains the first interactive multi-page prototype selected from the project's Product Design exploration.
+Tropic Loop is a bilingual, Chinese-first student guide for learning, living and finding opportunities across North Queensland. The current release starts with Cairns and is designed to expand to Townsville without presenting itself as an official university product.
 
 ## What is included
 
@@ -11,6 +11,7 @@ Cairns Loop is a bilingual, Chinese-first student guide for learning, living and
 - Responsive desktop, tablet and mobile layouts
 - Official-source links for JCU Cairns Campus, Ideas Lab and John Grey Hall imagery
 - Static build output compatible with the bundled hosting worker
+- GitHub Pages deployment with repository-path-aware client-side routing
 
 ## Run locally
 
