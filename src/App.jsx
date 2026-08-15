@@ -1,0 +1,132 @@
+import { useEffect, useState } from "react";
+import { ArrowRight, List, WaveSine, X } from "@phosphor-icons/react";
+import { copy, navigation } from "./data/content.js";
+import { routeIdForPath, normalizePath } from "./router.js";
+import { HomePage } from "./pages/HomePage.jsx";
+import { LifePage } from "./pages/LifePage.jsx";
+import { OpportunitiesPage } from "./pages/OpportunitiesPage.jsx";
+import { StudyPage } from "./pages/StudyPage.jsx";
+
+export function App() {
+  const [locale, setLocale] = useState("zh");
+  const [path, setPath] = useState(() => normalizePath(window.location.pathname));
+  const [menuOpen, setMenuOpen] = useState(false);
+  const text = copy[locale];
+  const routeId = routeIdForPath(path);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setPath(normalizePath(window.location.pathname));
+      setMenuOpen(false);
+      window.scrollTo({ top: 0 });
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  const navigate = (nextPath) => {
+    const normalized = normalizePath(nextPath);
+    if (normalized !== path) {
+      window.history.pushState({}, "", normalized);
+      setPath(normalized);
+    }
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const renderPage = () => {
+    if (routeId === "study") return <StudyPage locale={locale} />;
+    if (routeId === "life") return <LifePage locale={locale} />;
+    if (routeId === "opportunities") return <OpportunitiesPage locale={locale} />;
+    return <HomePage locale={locale} onNavigate={navigate} />;
+  };
+
+  return (
+    <div className="app-shell">
+      <header className="site-header">
+        <div className="header-inner">
+          <a
+            className="brand"
+            href="/"
+            onClick={(event) => {
+              event.preventDefault();
+              navigate("/");
+            }}
+          >
+            <WaveSine size={46} weight="regular" aria-hidden="true" />
+            <span>Cairns Loop</span>
+          </a>
+
+          <nav className="desktop-nav" aria-label={locale === "zh" ? "主导航" : "Primary navigation"}>
+            {navigation.map((item) => (
+              <a
+                href={item.path}
+                aria-current={routeId === item.id ? "page" : undefined}
+                className={routeId === item.id ? "active" : ""}
+                key={item.id}
+                onClick={(event) => {
+                  event.preventDefault();
+                  navigate(item.path);
+                }}
+              >
+                {item.label[locale]}
+              </a>
+            ))}
+          </nav>
+
+          <div className="header-actions">
+            <div className="language-switch" aria-label="Language">
+              <button className={locale === "zh" ? "active" : ""} type="button" onClick={() => setLocale("zh")}>
+                中文
+              </button>
+              <span aria-hidden="true">|</span>
+              <button className={locale === "en" ? "active" : ""} type="button" onClick={() => setLocale("en")}>
+                EN
+              </button>
+            </div>
+            <button
+              className="menu-toggle"
+              type="button"
+              aria-expanded={menuOpen}
+              aria-label={menuOpen ? text.close : text.menu}
+              onClick={() => setMenuOpen((value) => !value)}
+            >
+              {menuOpen ? <X size={24} /> : <List size={26} />}
+            </button>
+          </div>
+        </div>
+
+        {menuOpen && (
+          <nav className="mobile-nav" aria-label={locale === "zh" ? "移动端导航" : "Mobile navigation"}>
+            {navigation.map((item) => (
+              <a
+                href={item.path}
+                aria-current={routeId === item.id ? "page" : undefined}
+                className={routeId === item.id ? "active" : ""}
+                key={item.id}
+                onClick={(event) => {
+                  event.preventDefault();
+                  navigate(item.path);
+                }}
+              >
+                {item.label[locale]}
+                <ArrowRight size={18} />
+              </a>
+            ))}
+          </nav>
+        )}
+      </header>
+
+      <main key={path}>{renderPage()}</main>
+
+      <footer>
+        <p>{text.disclaimer}</p>
+        <div>
+          <span>Cairns · Australia</span>
+          <span aria-hidden="true">|</span>
+          <time dateTime="2026-08-15">15 August 2026</time>
+        </div>
+      </footer>
+    </div>
+  );
+}
