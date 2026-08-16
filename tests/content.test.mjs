@@ -17,7 +17,9 @@ import {
   essentialPlaces,
   lifeServices,
   mobilePlans,
+  mobilePrimaryNavigationIds,
   navigation,
+  copy,
   openLearningTopics,
   staffDirectory,
   studyPaths,
@@ -101,6 +103,20 @@ test("the primary navigation has one distinct path for each product area", () =>
       ["about", "/about"],
     ],
   );
+});
+
+test("mobile navigation keeps the four highest-frequency destinations one tap away", () => {
+  assert.deepEqual(mobilePrimaryNavigationIds, ["home", "study", "life", "market"]);
+  for (const id of mobilePrimaryNavigationIds) {
+    assert.ok(navigation.some((item) => item.id === id));
+  }
+});
+
+test("Chinese page labels are concise Chinese-first navigation cues", () => {
+  for (const pageId of ["home", "campus", "study", "life", "culture", "market", "career"]) {
+    assert.match(copy.zh[pageId].eyebrow, /[\u3400-\u9fff]/);
+  }
+  assert.equal(copy.zh.more, "更多");
 });
 
 test("the open learning library covers core quantitative and computing foundations", () => {

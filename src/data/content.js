@@ -9,6 +9,8 @@ export const navigation = [
   { id: "about", path: "/about", label: { zh: "作者", en: "About" } },
 ];
 
+export const mobilePrimaryNavigationIds = ["home", "study", "life", "market"];
+
 export const appRoutes = [
   ...navigation,
   { id: "opportunities", path: "/opportunities" },
@@ -378,7 +380,7 @@ export const campusOffices = [
 export const copy = {
   zh: {
     home: {
-      eyebrow: "YOUR NORTH QUEENSLAND STUDENT HUB",
+      eyebrow: "北昆士兰学生指南",
       headline: "在 JCU 学习，\n也在北昆士兰生活。",
       promise: "课程、生活与机会，一处找到。",
       intro: "先选择你所在的校区；本周安排、校园路线与课程入口会随之更新。",
@@ -387,7 +389,7 @@ export const copy = {
       exploreIntro: "官方校园信息、住宿与创新空间，一次找到正确入口。",
     },
     campus: {
-      eyebrow: "FIND YOUR WAY AROUND JCU",
+      eyebrow: "JCU 校园导航",
       title: "楼号、办公室、路线，\n一搜就到。",
       intro: "搜索楼号、建筑、服务或导师；详细位置与路线回到 JCU 官方地图和 Google Maps。",
       sectionTitle: "校园建筑目录",
@@ -395,7 +397,7 @@ export const copy = {
       staffTitle: "查导师与员工",
     },
     study: {
-      eyebrow: "STUDY AT JCU",
+      eyebrow: "JCU 学业导航",
       title: "先看懂课程，\n再开始投入。",
       intro: "查 JCU 课程，也看懂 JCU–XUT 2+2 与 3+2 的培养路径、学分边界和每一步要确认的材料。",
       sectionTitle: "规划你的学业路径",
@@ -408,7 +410,7 @@ export const copy = {
       notice: "学习页只提供理解、规划与复习支持，不代写或代做评估任务。",
     },
     life: {
-      eyebrow: "LIVE IN NORTH QUEENSLAND",
+      eyebrow: "北昆士兰生活",
       title: "落地之后，\n少走一点弯路。",
       intro: "把交通、住宿、通信和日常决策放进清晰场景；实时信息直接回到官方来源。",
       sectionTitle: "生活服务入口",
@@ -416,7 +418,7 @@ export const copy = {
       placeTitle: "校园位置与交通入口",
     },
     culture: {
-      eyebrow: "UNDERSTAND THE PLACE YOU STUDY IN",
+      eyebrow: "北昆士兰文化入门",
       title: "先理解这里，\n再真正融入这里。",
       intro: "从澳洲日常、JCU 校园到北昆士兰节庆，了解新环境的表达方式、文化边界和参与入口。",
       layersTitle: "从三个层次认识新环境",
@@ -425,7 +427,7 @@ export const copy = {
       contributeTitle: "分享你的生活经验",
     },
     setup: {
-      eyebrow: "SET UP YOUR FIRST WEEK",
+      eyebrow: "落地第一周准备",
       title: "电话卡和银行卡，\n一次比较清楚。",
       intro: "先看长期价格、覆盖和开户条件，再进入运营商或银行官方页面办理。促销可能随时变化。",
       mobileTitle: "电话卡套餐比较",
@@ -433,20 +435,20 @@ export const copy = {
       checklistTitle: "办理前准备",
     },
     essentials: {
-      eyebrow: "EVERYDAY NORTH QUEENSLAND",
+      eyebrow: "北昆士兰日常生活",
       title: "吃饭、娱乐和生活采购，\n按场景找到。",
       intro: "先收录校区附近和学生高频使用的公开入口；价格、营业时间和预约要求以商家页面为准。",
       sectionTitle: "日常生活目录",
     },
     opportunities: {
-      eyebrow: "BUILD WHAT COMES NEXT",
+      eyebrow: "机会与实践",
       title: "不只看到活动，\n也找到参与方式。",
       intro: "筛选与专业相关的项目、创新活动和真实任务，并明确当前状态。",
       sectionTitle: "机会板",
       placeTitle: "创新与实践连接点",
     },
     market: {
-      eyebrow: "STUDENT-TO-STUDENT COMMUNITY",
+      eyebrow: "学生互助社区",
       title: "闲置流动起来，\n小事顺手解决。",
       intro: "发布二手物品，或请同校区同学顺路带一件。先把需求、价格和交接方式说清楚。",
       sectionTitle: "社区发布板",
@@ -454,7 +456,7 @@ export const copy = {
       errand: "顺手带一件",
     },
     career: {
-      eyebrow: "CAREER & DEVELOPMENT",
+      eyebrow: "就业与发展",
       title: "从第一份经历，\n走向下一份机会。",
       intro: "把就业入口、实践路径和申请准备整理在一起；公开信息优先回到 JCU 与澳洲官方来源。",
       sectionTitle: "你的发展路线",
@@ -462,7 +464,7 @@ export const copy = {
       voicesTitle: "老师与学长学姐经验",
     },
     about: {
-      eyebrow: "ABOUT TROPIC LOOP",
+      eyebrow: "关于 TROPIC LOOP",
       title: "一个学生做的，\n也为学生持续更新。",
       intro: "Tropic Loop 由 Haodong Zhang 独立发起和维护，源于在 JCU 凯恩斯校区学习生活两年的真实信息痛点。",
     },
@@ -470,6 +472,7 @@ export const copy = {
     searchPlaceholder: "搜索课程、导师、楼号、公交、住宿或活动",
     menu: "打开导航",
     close: "关闭导航",
+    more: "更多",
     search: "搜索",
     searchFound: "找到相关内容",
     searchEmpty: "暂时没有找到。可尝试课程代码、导师姓名、楼号或服务名称。",
@@ -576,6 +579,7 @@ export const copy = {
     searchPlaceholder: "Search courses, staff, buildings, buses, housing or events",
     menu: "Open navigation",
     close: "Close navigation",
+    more: "More",
     search: "Search",
     searchFound: "Relevant information found",
     searchEmpty: "No match yet. Try a course code, staff name, building number or service.",

@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
-import { ArrowRight, List, WaveSine, X } from "@phosphor-icons/react";
-import { copy, navigation } from "./data/content.js";
+import {
+  ArrowRight,
+  BookOpenText,
+  Compass,
+  DotsThree,
+  House,
+  List,
+  UsersThree,
+  WaveSine,
+  X,
+} from "@phosphor-icons/react";
+import { copy, mobilePrimaryNavigationIds, navigation } from "./data/content.js";
 import { CampusSelector } from "./components/CampusSelector.jsx";
 import {
   browserPathForRoute,
@@ -31,6 +41,17 @@ export function App() {
   const activeNavId = ["setup", "essentials"].includes(routeId)
     ? "life"
     : routeId === "opportunities" ? "career" : routeId;
+  const mobileIcons = {
+    home: House,
+    study: BookOpenText,
+    life: Compass,
+    market: UsersThree,
+  };
+  const mobileNavigation = mobilePrimaryNavigationIds.map((id) => ({
+    ...navigation.find((item) => item.id === id),
+    Icon: mobileIcons[id],
+  }));
+  const moreIsActive = menuOpen || !mobilePrimaryNavigationIds.includes(activeNavId);
 
   const selectCampus = (nextCampusId) => {
     setCampusId(nextCampusId);
@@ -148,6 +169,34 @@ export function App() {
           </nav>
         )}
       </header>
+
+      <nav className="mobile-bottom-nav" aria-label={locale === "zh" ? "手机快捷导航" : "Mobile quick navigation"}>
+        {mobileNavigation.map(({ id, path: itemPath, label, Icon }) => (
+          <a
+            href={browserPathForRoute(itemPath, basePath)}
+            aria-current={activeNavId === id ? "page" : undefined}
+            className={activeNavId === id ? "active" : ""}
+            key={id}
+            onClick={(event) => {
+              event.preventDefault();
+              navigate(itemPath);
+            }}
+          >
+            <Icon size={22} weight={activeNavId === id ? "fill" : "regular"} aria-hidden="true" />
+            <span>{label[locale]}</span>
+          </a>
+        ))}
+        <button
+          type="button"
+          className={moreIsActive ? "active" : ""}
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? text.close : text.menu}
+          onClick={() => setMenuOpen((value) => !value)}
+        >
+          <DotsThree size={23} weight={moreIsActive ? "bold" : "regular"} aria-hidden="true" />
+          <span>{text.more}</span>
+        </button>
+      </nav>
 
       <main key={path}>{renderPage()}</main>
 
