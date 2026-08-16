@@ -7,6 +7,8 @@ import {
   campuses,
   careerResources,
   communityRules,
+  culturalEvents,
+  cultureLayers,
   authorProfile,
   imageSources,
   jointPathwayModes,
@@ -16,6 +18,7 @@ import {
   lifeServices,
   mobilePlans,
   navigation,
+  openLearningTopics,
   staffDirectory,
   studyPaths,
   weeklyItems,
@@ -67,10 +70,20 @@ test("all study resources and joint pathway sources use public HTTPS links", () 
   }
 });
 
-test("all visible location images have an official source link", () => {
+test("all visible location images have a secure source link", () => {
   for (const image of Object.values(imageSources)) {
-    assert.match(image.src, /^https:\/\/www\.jcu\.edu\.au\//);
-    assert.match(image.source, /^https:\/\/www\.jcu\.edu\.au\//);
+    assert.match(image.src, /^https:\/\//);
+    assert.match(image.source, /^https:\/\//);
+  }
+});
+
+test("campus, study and culture use distinct contextual hero images", () => {
+  for (const campus of Object.values(campuses)) {
+    const pageImages = [campus.campusImage, campus.studyImage, campus.cultureImage];
+    assert.equal(new Set(pageImages.map((image) => image.src)).size, 3);
+    for (const image of pageImages) {
+      assert.ok(Object.values(imageSources).includes(image));
+    }
   }
 });
 
@@ -82,11 +95,38 @@ test("the primary navigation has one distinct path for each product area", () =>
       ["campus", "/campus"],
       ["study", "/study"],
       ["life", "/life"],
+      ["culture", "/culture"],
       ["market", "/market"],
       ["career", "/career"],
       ["about", "/about"],
     ],
   );
+});
+
+test("the open learning library covers core quantitative and computing foundations", () => {
+  assert.deepEqual(
+    openLearningTopics.slice(0, 3).map((topic) => topic.id),
+    ["machine-learning", "linear-algebra", "probability-statistics"],
+  );
+  assert.ok(openLearningTopics.length >= 6);
+  assert.ok(openLearningTopics.some((topic) => topic.resources.some((resource) => resource.platform === "YouTube")));
+  assert.ok(openLearningTopics.some((topic) => topic.resources.some((resource) => resource.platform === "Bilibili")));
+  for (const topic of openLearningTopics) {
+    assert.ok(topic.resources.length >= 2);
+    for (const resource of topic.resources) assert.match(resource.url, /^https:\/\//);
+  }
+});
+
+test("the culture section has official layers and campus-specific event entry points", () => {
+  assert.deepEqual(cultureLayers.map((layer) => layer.id), ["australia", "jcu", "north-queensland"]);
+  for (const layer of cultureLayers) {
+    assert.ok(layer.links.length >= 2);
+    for (const link of layer.links) assert.match(link.url, /^https:\/\//);
+  }
+  for (const campus of ["cairns", "townsville"]) {
+    assert.ok(culturalEvents.filter((event) => event.campus === campus).length >= 2);
+  }
+  for (const event of culturalEvents) assert.match(event.url, /^https:\/\//);
 });
 
 test("community posting enforces the requested minimum errand commission", () => {

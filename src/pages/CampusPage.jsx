@@ -31,8 +31,8 @@ export function CampusPage({ locale, campusId }) {
         eyebrow={`${page.eyebrow} · ${campus.name[locale]}`}
         title={page.title}
         intro={`${page.intro} ${campus.address}`}
-        image={campus.image.src}
-        source={campus.image.source}
+        image={campus.campusImage.src}
+        source={campus.campusImage.source}
         sourceLabel={text.source}
         alt={`${campus.name[locale]} · ${campus.traditionalName}`}
       />

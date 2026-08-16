@@ -3,6 +3,7 @@ export const navigation = [
   { id: "campus", path: "/campus", label: { zh: "校园", en: "Campus" } },
   { id: "study", path: "/study", label: { zh: "学业", en: "Study" } },
   { id: "life", path: "/life", label: { zh: "生活", en: "Life" } },
+  { id: "culture", path: "/culture", label: { zh: "文化", en: "Culture" } },
   { id: "market", path: "/market", label: { zh: "社区", en: "Community" } },
   { id: "career", path: "/career", label: { zh: "发展", en: "Career" } },
   { id: "about", path: "/about", label: { zh: "作者", en: "About" } },
@@ -23,6 +24,30 @@ export const imageSources = {
   townsvilleCampus: {
     src: "https://www.jcu.edu.au/about-jcu/campuses/townsville/images/Tnsvl-2.jpg",
     source: "https://www.jcu.edu.au/about-jcu/campuses/townsville",
+  },
+  cairnsCampusGuide: {
+    src: "https://www.jcu.edu.au/__data/assets/image/0006/2333463/Still-2026-04-16-151931_1.21.1-1.jpg",
+    source: "https://www.jcu.edu.au/about-jcu/campuses/cairns",
+  },
+  cairnsStudy: {
+    src: "https://www.jcu.edu.au/jcu-ideas-lab/create/Maren_Eibner_Makerspace_03022022-19.jpg/feature-image.jpg",
+    source: "https://www.jcu.edu.au/jcu-ideas-lab/create",
+  },
+  cairnsCulture: {
+    src: "https://www.cairns.qld.gov.au/__data/assets/image/0004/334057/Visiting_CFImage.jpg",
+    source: "https://www.cairns.qld.gov.au/festival/your-festival",
+  },
+  townsvilleCampusGuide: {
+    src: "https://www.jcu.edu.au/about-jcu/campuses/townsville/images/Tnsvl-10.jpg",
+    source: "https://www.jcu.edu.au/about-jcu/campuses/townsville",
+  },
+  townsvilleStudy: {
+    src: "https://www.jcu.edu.au/_media/l1-homepage-wall-images/ttlgs0002875-3028-1.jpg",
+    source: "https://www.jcu.edu.au/about-jcu/campuses/townsville",
+  },
+  townsvilleCulture: {
+    src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Cultural_Fest_in_The_Strand_2009.jpg/1920px-Cultural_Fest_in_The_Strand_2009.jpg",
+    source: "https://commons.wikimedia.org/wiki/File:Cultural_Fest_in_The_Strand_2009.jpg",
   },
   ideasLab: {
     src: "https://www.jcu.edu.au/_media/reskin-banner-images-for-inside-pages/New-JCU-Ideas-Lab-banner-1-copy.jpg",
@@ -270,6 +295,9 @@ export const campuses = {
     traditionalName: "Nguma-bada campus, Smithfield",
     address: "14–88 McGregor Road, Smithfield QLD 4878",
     image: imageSources.cairnsCampus,
+    campusImage: imageSources.cairnsCampusGuide,
+    studyImage: imageSources.cairnsStudy,
+    cultureImage: imageSources.cairnsCulture,
     maps: {
       interactive: "https://jcu.app/map",
       printable: "https://www.jcu.edu.au/about-jcu/campuses/maps/Cairns_Green_A3.pdf",
@@ -284,6 +312,9 @@ export const campuses = {
     traditionalName: "Bebegu Yumba campus, Douglas",
     address: "1 James Cook Drive, Douglas QLD 4811",
     image: imageSources.townsvilleCampus,
+    campusImage: imageSources.townsvilleCampusGuide,
+    studyImage: imageSources.townsvilleStudy,
+    cultureImage: imageSources.townsvilleCulture,
     maps: {
       interactive: "https://jcu.app/map",
       printable: "https://www.jcu.edu.au/about-jcu/campuses/maps/Townsville_Green_A3.pdf",
@@ -368,7 +399,8 @@ export const copy = {
       title: "先看懂课程，\n再开始投入。",
       intro: "查 JCU 课程，也看懂 JCU–XUT 2+2 与 3+2 的培养路径、学分边界和每一步要确认的材料。",
       sectionTitle: "规划你的学业路径",
-      jcuMode: "JCU 课程资源",
+      jcuMode: "JCU 课程库",
+      publicMode: "公开学习资源",
       jointMode: "JCU–XUT 中外合办",
       selected: "当前课程",
       toolkit: "首批学习工具",
@@ -382,6 +414,15 @@ export const copy = {
       sectionTitle: "生活服务入口",
       routeTitle: "常用路线",
       placeTitle: "校园位置与交通入口",
+    },
+    culture: {
+      eyebrow: "UNDERSTAND THE PLACE YOU STUDY IN",
+      title: "先理解这里，\n再真正融入这里。",
+      intro: "从澳洲日常、JCU 校园到北昆士兰节庆，了解新环境的表达方式、文化边界和参与入口。",
+      layersTitle: "从三个层次认识新环境",
+      eventsTitle: "北昆士兰年度文化日历",
+      tipsTitle: "同学真正会用到的 Tips",
+      contributeTitle: "分享你的生活经验",
     },
     setup: {
       eyebrow: "SET UP YOUR FIRST WEEK",
@@ -464,7 +505,8 @@ export const copy = {
       title: "Understand the course.\nThen make a plan.",
       intro: "Explore JCU subjects and understand the credit, timing and confirmation points across JCU–XUT 2+2 and 3+2 pathways.",
       sectionTitle: "Plan your study pathway",
-      jcuMode: "JCU course resources",
+      jcuMode: "JCU subject library",
+      publicMode: "Open learning resources",
       jointMode: "JCU–XUT joint pathways",
       selected: "Selected course",
       toolkit: "First-release study tools",
@@ -478,6 +520,15 @@ export const copy = {
       sectionTitle: "Life service entry points",
       routeTitle: "Useful routes",
       placeTitle: "Campus location and transport",
+    },
+    culture: {
+      eyebrow: "UNDERSTAND THE PLACE YOU STUDY IN",
+      title: "Understand the place.\nThen become part of it.",
+      intro: "Explore Australian everyday life, JCU campus culture and North Queensland events, with practical ways to participate respectfully.",
+      layersTitle: "Understand your new environment in three layers",
+      eventsTitle: "North Queensland annual culture calendar",
+      tipsTitle: "Tips students will actually use",
+      contributeTitle: "Share what you have learned",
     },
     setup: {
       eyebrow: "SET UP YOUR FIRST WEEK",
@@ -1054,8 +1105,276 @@ export const authorProfile = {
     { title: { zh: "不冒充学校官方", en: "Remain independent" }, detail: { zh: "这是独立学生项目；政策、课程与服务变更以官方页面为准。", en: "This is an independent student project; official pages remain authoritative for policy, study and service changes." } },
     { title: { zh: "先对学生真正有用", en: "Student value comes first" }, detail: { zh: "未来可以探索收入，但不会用付费排名替代真实判断。", en: "Revenue can be explored later, but paid ranking will not replace honest judgement." } },
   ],
-  github: "https://github.com/Haodong-Zhang1/Cairns-Loop-Website",
+  github: "https://github.com/Haodong-Zhang1/Tropic-Loop-Website",
 };
+
+export const openLearningTopics = [
+  {
+    id: "machine-learning",
+    title: { zh: "机器学习", en: "Machine learning" },
+    description: { zh: "从监督学习、优化到深度学习，适合 MA5832 和数据科学项目打基础。", en: "Supervised learning, optimisation and deep learning foundations for MA5832 and data projects." },
+    prerequisite: { zh: "建议先会 Python、线性代数和基础概率", en: "Python, linear algebra and basic probability recommended" },
+    resources: [
+      {
+        title: "Stanford CS229 · Machine Learning",
+        provider: "Stanford Online · Andrew Ng",
+        platform: "YouTube",
+        language: { zh: "英语 · 可开字幕", en: "English · captions available" },
+        level: { zh: "进阶", en: "Intermediate" },
+        note: { zh: "体系完整、数学要求较高；先看课程概览，再按当前 JCU 主题选讲。", en: "A rigorous full course; start with the overview and match lectures to your JCU topic." },
+        url: "https://www.youtube.com/watch?v=jGwO_UgTS7I",
+      },
+      {
+        title: "李宏毅 2023 春季机器学习课程",
+        provider: "National Taiwan University · authorised Bilibili upload",
+        platform: "Bilibili",
+        language: { zh: "中文", en: "Mandarin" },
+        level: { zh: "入门到进阶", en: "Beginner to intermediate" },
+        note: { zh: "解释直观，包含生成式 AI 与深度学习；页面标注已取得老师转载授权。", en: "Accessible explanations across deep and generative learning; the upload states instructor permission." },
+        url: "https://www.bilibili.com/video/BV1TD4y137mP/",
+      },
+    ],
+  },
+  {
+    id: "linear-algebra",
+    title: { zh: "线性代数", en: "Linear algebra" },
+    description: { zh: "理解向量、矩阵、特征值与最小二乘，是统计、机器学习和信号处理的共同底层。", en: "Vectors, matrices, eigenvalues and least squares underpin statistics, machine learning and signal processing." },
+    prerequisite: { zh: "高中代数；建议边看边手算", en: "School algebra; work examples by hand" },
+    resources: [
+      {
+        title: "MIT 18.06SC · Linear Algebra",
+        provider: "MIT OpenCourseWare · Gilbert Strang",
+        platform: "MIT OCW",
+        language: { zh: "英语 · 视频/讲义/习题", en: "English · videos, notes and problems" },
+        level: { zh: "系统课程", en: "Full course" },
+        note: { zh: "完整公开课，含视频、总结、Problem Sets 与答案，适合系统补基础。", en: "A complete self-study course with videos, summaries, problem sets and solutions." },
+        url: "https://ocw.mit.edu/courses/18-06sc-linear-algebra-fall-2011/",
+      },
+      {
+        title: "线性代数的本质",
+        provider: "3Blue1Brown · 中国官方账号",
+        platform: "Bilibili",
+        language: { zh: "官方双语", en: "Official bilingual edition" },
+        level: { zh: "概念入门", en: "Conceptual primer" },
+        note: { zh: "先建立几何直觉，再回到公式和习题；不建议只看动画不做题。", en: "Build geometric intuition first, then return to equations and exercises." },
+        url: "https://www.bilibili.com/list/88461692?bvid=BV1ys411472E&oid=6731067",
+      },
+    ],
+  },
+  {
+    id: "probability-statistics",
+    title: { zh: "概率论与统计", en: "Probability & statistics" },
+    description: { zh: "覆盖条件概率、随机变量、常见分布、期望与极限定理，为统计建模建立理论基础。", en: "Conditional probability, random variables, distributions, expectation and limit laws for statistical modelling." },
+    prerequisite: { zh: "单变量微积分与基础矩阵运算", en: "Single-variable calculus and basic matrix operations" },
+    resources: [
+      {
+        title: "Harvard STAT 110 · Probability",
+        provider: "Harvard University · Joe Blitzstein",
+        platform: "YouTube + course site",
+        language: { zh: "英语 · 视频/讲义/习题", en: "English · videos, notes and problems" },
+        level: { zh: "系统课程", en: "Full course" },
+        note: { zh: "强调条件化思维，官方页面同时提供讲义、练习与免费教材入口。", en: "Strong focus on conditional thinking, with notes, practice and a free textbook from the official site." },
+        url: "https://stat110.hsites.harvard.edu/",
+      },
+      {
+        title: "MIT 6.041SC · Applied Probability",
+        provider: "MIT OpenCourseWare · John Tsitsiklis",
+        platform: "MIT OCW",
+        language: { zh: "英语 · 视频/习题/考试", en: "English · videos, problems and exams" },
+        level: { zh: "工程方向", en: "Engineering focus" },
+        note: { zh: "适合工程与数据专业，课程设计支持独立学习并包含解答。", en: "Designed for independent engineering study with worked support and solutions." },
+        url: "https://ocw.mit.edu/courses/6-041sc-probabilistic-systems-analysis-and-applied-probability-fall-2013/",
+      },
+    ],
+  },
+  {
+    id: "python-data",
+    title: { zh: "Python 与数据处理", en: "Python & data" },
+    description: { zh: "把语言基础、NumPy、pandas 与 Notebook 工作流连起来，适合第一次用 Python 完成作业。", en: "Connect Python, NumPy, pandas and notebook workflows for a first data assignment." },
+    prerequisite: { zh: "无需编程基础", en: "No programming prerequisite" },
+    resources: [
+      {
+        title: "Python 官方教程",
+        provider: "Python Software Foundation",
+        platform: "Documentation",
+        language: { zh: "英语 · 可翻译", en: "English" },
+        level: { zh: "入门", en: "Beginner" },
+        note: { zh: "把语法当成查询手册使用；先完成变量、控制流、函数和数据结构。", en: "Use it as a reference; prioritise variables, control flow, functions and data structures." },
+        url: "https://docs.python.org/3/tutorial/",
+      },
+      {
+        title: "pandas Getting Started",
+        provider: "pandas project",
+        platform: "Documentation",
+        language: { zh: "英语 · 可运行示例", en: "English · runnable examples" },
+        level: { zh: "入门", en: "Beginner" },
+        note: { zh: "从表格读写、筛选、缺失值与分组开始，直接对应多数数据作业。", en: "Start with I/O, filtering, missing data and grouping for common coursework tasks." },
+        url: "https://pandas.pydata.org/docs/getting_started/",
+      },
+    ],
+  },
+  {
+    id: "signals-electronics",
+    title: { zh: "信号、系统与电子", en: "Signals, systems & electronics" },
+    description: { zh: "面向电子工程与 IoT，连接时域、频域、滤波、通信和嵌入式应用。", en: "Time and frequency domains, filtering, communications and embedded applications for electronics and IoT." },
+    prerequisite: { zh: "微积分、复数与基础线性代数", en: "Calculus, complex numbers and basic linear algebra" },
+    resources: [
+      {
+        title: "MIT Signals and Systems",
+        provider: "MIT OpenCourseWare · Alan V. Oppenheim",
+        platform: "MIT OCW + YouTube",
+        language: { zh: "英语 · 视频/讲义", en: "English · videos and notes" },
+        level: { zh: "进阶", en: "Intermediate" },
+        note: { zh: "先掌握离散时间信号、系统性质和 Fourier 表示，再进入 DSP。", en: "Cover discrete-time signals, system properties and Fourier representations before DSP." },
+        url: "https://ocw.mit.edu/courses/res-6-007-signals-and-systems-spring-2011/",
+      },
+      {
+        title: "Digital Signal Processing",
+        provider: "TU Delft OpenCourseWare",
+        platform: "OpenCourseWare",
+        language: { zh: "英语 · 视频/课程资料", en: "English · videos and course material" },
+        level: { zh: "进阶", en: "Intermediate" },
+        note: { zh: "覆盖 DFT、FFT、OFDM、估计与滤波，适合 EE3010 相关复习。", en: "Covers DFT, FFT, OFDM, estimation and filtering for EE3010-related revision." },
+        url: "https://ocw.tudelft.nl/courses/digital-signal-processing/",
+      },
+    ],
+  },
+  {
+    id: "cybersecurity",
+    title: { zh: "网络与信息安全", en: "Cybersecurity" },
+    description: { zh: "从账号、系统和网络安全到 Web 漏洞实践，适合 CP2414 与 CP5603。", en: "Accounts, systems, networks and practical web vulnerabilities for CP2414 and CP5603." },
+    prerequisite: { zh: "基础网络概念", en: "Basic networking concepts" },
+    resources: [
+      {
+        title: "CS50's Introduction to Cybersecurity",
+        provider: "Harvard University · CS50",
+        platform: "OpenCourseWare",
+        language: { zh: "英语 · 视频/作业", en: "English · videos and assignments" },
+        level: { zh: "入门", en: "Beginner" },
+        note: { zh: "五周免费公开课程，从账户、数据、系统、软件和隐私建立整体框架。", en: "A free five-week overview of accounts, data, systems, software and privacy." },
+        url: "https://cs50.harvard.edu/cybersecurity/",
+      },
+      {
+        title: "Web Security Academy",
+        provider: "PortSwigger",
+        platform: "Interactive labs",
+        language: { zh: "英语 · 免费实验", en: "English · free labs" },
+        level: { zh: "入门到进阶", en: "Beginner to advanced" },
+        note: { zh: "只在授权实验环境练习，不要对学校、公司或他人系统进行测试。", en: "Practise only in authorised labs, never against university, company or third-party systems." },
+        url: "https://portswigger.net/web-security",
+      },
+    ],
+  },
+];
+
+export const resourceRecommendationUrl = "https://github.com/Haodong-Zhang1/Tropic-Loop-Website/issues/new";
+
+export const cultureLayers = [
+  {
+    id: "australia",
+    eyebrow: { zh: "AUSTRALIA", en: "AUSTRALIA" },
+    title: { zh: "日常表达与学习方式", en: "Everyday communication and learning" },
+    points: {
+      zh: ["交流通常直接、友好，称呼相对随意，但守时和提前说明很重要。", "课堂更强调 independent learning、批判性思考和主动提问。", "澳洲多元文化并不意味着所有习惯都一样；先观察、尊重差异，再确认。"],
+      en: ["Communication is often direct and informal, while punctuality and advance notice matter.", "Classes emphasise independent learning, critical thinking and asking questions.", "A multicultural society does not mean everyone shares the same habits; observe, respect and clarify."],
+    },
+    links: [
+      { label: { zh: "Study Australia · 文化与生活", en: "Study Australia · Culture and lifestyle" }, url: "https://www.studyaustralia.gov.au/en/why-australia/australian-culture-and-lifestyle" },
+      { label: { zh: "国际学生的文化适应经验", en: "Culture insights from international students" }, url: "https://www.studyaustralia.gov.au/en_in/tools-and-resources/tips-and-advice-for-students/australian-culture" },
+    ],
+  },
+  {
+    id: "jcu",
+    eyebrow: { zh: "JCU", en: "JCU" },
+    title: { zh: "校园共同体与文化边界", en: "Campus community and cultural respect" },
+    points: {
+      zh: ["International Student Orientation 对学生签证持有人是 mandatory；它也是认识支持服务的最快入口。", "加入 JCUSA Clubs & Societies，比只待在同语种群聊里更容易建立本地联系。", "Nguma-bada 与 Bebegu Yumba 位于 First Nations Country；理解 Acknowledgement of Country 是校园文化的一部分。"],
+      en: ["International Student Orientation is mandatory for student-visa holders and the fastest route into support services.", "JCUSA clubs and societies make it easier to build local connections beyond one language group.", "Nguma-bada and Bebegu Yumba are on First Nations Country; understanding Acknowledgement of Country is part of campus culture."],
+    },
+    links: [
+      { label: { zh: "JCU 国际学生抵澳准备", en: "JCU international pre-departure guide" }, url: "https://www.jcu.edu.au/international-students/coming-to-australia" },
+      { label: { zh: "JCU 文化协议说明", en: "JCU cultural protocols" }, url: "https://www.jcu.edu.au/ierc/our-centre/ierc-purpose" },
+      { label: { zh: "JCUSA 凯恩斯社团", en: "JCUSA Cairns clubs" }, url: "https://www.jcusa.edu.au/clubs/join-a-club-cairns/" },
+    ],
+  },
+  {
+    id: "north-queensland",
+    eyebrow: { zh: "NORTH QUEENSLAND", en: "NORTH QUEENSLAND" },
+    title: { zh: "热带节奏与本地参与", en: "Tropical rhythms and local participation" },
+    points: {
+      zh: ["Wet season、炎热和突发天气会改变交通与活动安排；出发当天再看官方更新。", "Show、Festival、First Nations art 和多元文化活动是理解当地社区的直接入口。", "参加自然与文化活动时遵守场地、Country 与野生动物安全要求。"],
+      en: ["Wet season, heat and sudden weather can change travel and events; check the official update on the day.", "Shows, festivals, First Nations art and multicultural events are direct ways into local community life.", "Follow venue, Country and wildlife-safety requirements during nature and cultural activities."],
+    },
+    links: [
+      { label: { zh: "凯恩斯年度活动", en: "Cairns annual events" }, url: "https://www.cairns.qld.gov.au/experience-cairns/events/annual-events" },
+      { label: { zh: "What's On Townsville", en: "What's On Townsville" }, url: "https://whatson.townsville.qld.gov.au/" },
+    ],
+  },
+];
+
+export const culturalEvents = [
+  {
+    id: "cairns-show", campus: "cairns", month: { zh: "通常 7 月", en: "Usually July" },
+    title: "Cairns Show", type: { zh: "农业展 · 游乐设施 · 社区传统", en: "Agricultural show · rides · local tradition" },
+    description: { zh: "凯恩斯长期举办的年度 Show；具体日期、门票与 Show Holiday 每年确认。", en: "Cairns' long-running annual show; confirm dates, tickets and the local show holiday each year." },
+    access: { zh: "部分付费", en: "Mostly ticketed" }, url: "https://cairnsshow.com.au/",
+  },
+  {
+    id: "ciaf", campus: "cairns", month: { zh: "通常 7 月", en: "Usually July" },
+    title: "Cairns Indigenous Art Fair", type: { zh: "First Nations 艺术与文化", en: "First Nations art and culture" },
+    description: { zh: "连接 Queensland First Nations 艺术家、表演、讲座与社区活动；不同项目可能免费或售票。", en: "First Nations art, performance, talks and community programs from across Queensland; access varies by event." },
+    access: { zh: "免费 + 付费项目", en: "Free + ticketed program" }, url: "https://ciaf.com.au/",
+  },
+  {
+    id: "cairns-festival", campus: "cairns", month: { zh: "通常 8–9 月", en: "Usually Aug–Sep" },
+    title: "Cairns Festival", type: { zh: "艺术 · 音乐 · Parade · 社区", en: "Arts · music · parade · community" },
+    description: { zh: "Council 举办的十日城市节庆，许多 Esplanade 项目免费，适合第一次了解凯恩斯公共文化生活。", en: "A ten-day Council festival with many free Esplanade events and an accessible introduction to Cairns civic life." },
+    access: { zh: "大量免费项目", en: "Many free events" }, url: "https://www.cairns.qld.gov.au/festival",
+  },
+  {
+    id: "cairns-multicultural", campus: "cairns", month: { zh: "通常 8–10 月", en: "Usually Aug–Oct" },
+    title: { zh: "Cairns Multicultural Month", en: "Cairns Multicultural Month" }, type: { zh: "多元文化 · 社区节庆", en: "Multicultural community events" },
+    description: { zh: "集中展示不同社区的食物、表演和节庆；当年活动以 Council 列表为准。", en: "Food, performance and celebrations from local communities; use the Council list for the current program." },
+    access: { zh: "多为免费", en: "Mostly free" }, url: "https://www.cairns.qld.gov.au/community-environment/community-support/multicultural/multicultural-month",
+  },
+  {
+    id: "townsville-whats-on", campus: "townsville", month: { zh: "全年", en: "Year-round" },
+    title: "What's On Townsville", type: { zh: "官方活动日历", en: "Official event calendar" },
+    description: { zh: "按日期查找表演、市场、文化节、讲座和社区活动，是最稳妥的实时入口。", en: "The live Council entry point for performances, markets, festivals, talks and community activities." },
+    access: { zh: "免费与付费", en: "Free and ticketed" }, url: "https://whatson.townsville.qld.gov.au/",
+  },
+  {
+    id: "townsville-cultural", campus: "townsville", month: { zh: "全年分布", en: "Across the year" },
+    title: { zh: "Townsville 多元文化活动", en: "Townsville multicultural events" }, type: { zh: "文化节 · 社区活动", en: "Festivals · community events" },
+    description: { zh: "Council 汇总 Diwali、Greek Festival、Townsville Cultural Festival 等多元文化参与入口。", en: "Council information covering Diwali, Greek Festival, Townsville Cultural Festival and other community events." },
+    access: { zh: "以当年页面为准", en: "Check each current listing" }, url: "https://www.townsville.qld.gov.au/community-support/services-and-community-development/culturally-diverse-people",
+  },
+];
+
+export const studentCultureTips = [
+  {
+    id: "tutorial", category: { zh: "课堂", en: "Classroom" },
+    title: { zh: "Tutorial 不是只听答案", en: "Tutorials are not answer sessions" },
+    detail: { zh: "提前带着一个具体问题去；老师更容易回应你卡在哪一步，而不是泛泛地问“怎么做作业”。", en: "Bring one specific question. Staff can respond to where you are stuck more effectively than to a broad request for assignment answers." },
+  },
+  {
+    id: "small-talk", category: { zh: "交流", en: "Communication" },
+    title: { zh: "从一句简短 Small Talk 开始", en: "Start with brief small talk" },
+    detail: { zh: "天气、周末和校园活动都是安全开场；对方问“How are you?”通常是问候，不必给很长的个人汇报。", en: "Weather, weekends and campus events are easy openers. “How are you?” is often a greeting rather than a request for a long personal update." },
+  },
+  {
+    id: "wet-season", category: { zh: "凯恩斯", en: "Cairns" },
+    title: { zh: "Wet season 的计划留余量", en: "Leave room in wet-season plans" },
+    detail: { zh: "出门前再看天气、道路和活动官方更新；重要 appointment 不要只预留刚好够用的公交时间。", en: "Recheck weather, roads and event updates before leaving, and allow extra travel time for important appointments." },
+  },
+  {
+    id: "club", category: { zh: "融入", en: "Belonging" },
+    title: { zh: "加入一个会定期见面的社团", en: "Join one group that meets regularly" },
+    detail: { zh: "一次性活动容易结束，固定训练、志愿活动或课程社团更容易形成真实关系。", en: "One-off events end quickly; recurring sport, volunteering or course clubs create more durable connections." },
+  },
+];
+
+export const cultureTipSubmissionUrl = "https://github.com/Haodong-Zhang1/Tropic-Loop-Website/issues/new";
 
 export const studyPaths = [
   {

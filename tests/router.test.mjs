@@ -22,6 +22,7 @@ test("maps each product path to its route id", () => {
   assert.equal(routeIdForPath("/campus"), "campus");
   assert.equal(routeIdForPath("/study"), "study");
   assert.equal(routeIdForPath("/life"), "life");
+  assert.equal(routeIdForPath("/culture"), "culture");
   assert.equal(routeIdForPath("/market"), "market");
   assert.equal(routeIdForPath("/career"), "career");
   assert.equal(routeIdForPath("/about"), "about");

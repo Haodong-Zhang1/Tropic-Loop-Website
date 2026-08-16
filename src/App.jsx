@@ -14,6 +14,7 @@ import { LifePage } from "./pages/LifePage.jsx";
 import { OpportunitiesPage } from "./pages/OpportunitiesPage.jsx";
 import { MarketPage } from "./pages/MarketPage.jsx";
 import { CareerPage } from "./pages/CareerPage.jsx";
+import { CulturePage } from "./pages/CulturePage.jsx";
 import { AboutPage } from "./pages/AboutPage.jsx";
 import { SetupPage } from "./pages/SetupPage.jsx";
 import { EssentialsPage } from "./pages/EssentialsPage.jsx";
@@ -60,6 +61,7 @@ export function App() {
     if (routeId === "campus") return <CampusPage locale={locale} campusId={campusId} />;
     if (routeId === "study") return <StudyPage locale={locale} campusId={campusId} />;
     if (routeId === "life") return <LifePage locale={locale} campusId={campusId} onNavigate={navigate} />;
+    if (routeId === "culture") return <CulturePage locale={locale} campusId={campusId} />;
     if (routeId === "market") return <MarketPage locale={locale} campusId={campusId} />;
     if (routeId === "career") return <CareerPage locale={locale} campusId={campusId} />;
     if (routeId === "about") return <AboutPage locale={locale} />;

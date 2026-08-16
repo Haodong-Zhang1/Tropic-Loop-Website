@@ -3,8 +3,11 @@ import {
   ArrowRight,
   ArrowSquareOut,
   BookOpenText,
+  Books,
   CheckCircle,
   GraduationCap,
+  PlayCircle,
+  Sparkle,
   MapPin,
   UserFocus,
   WarningCircle,
@@ -15,6 +18,8 @@ import {
   copy,
   jointPathwayModes,
   jointPathways,
+  openLearningTopics,
+  resourceRecommendationUrl,
   studyPaths,
 } from "../data/content.js";
 
@@ -28,7 +33,7 @@ function CourseLibrary({ locale, page, text }) {
       <div className="study-heading-row course-path-heading">
         <div>
           <span className="study-kicker">{locale === "zh" ? "按方向浏览" : "Browse by discipline"}</span>
-          <h2>{locale === "zh" ? "JCU 课程与公开学习资源" : "JCU subjects and public learning resources"}</h2>
+          <h2>{locale === "zh" ? "JCU 课程与伴学入口" : "JCU subjects and study support"}</h2>
         </div>
         <div className="path-tabs" role="tablist" aria-label={page.sectionTitle}>
           {studyPaths.map((path) => (
@@ -87,6 +92,89 @@ function CourseLibrary({ locale, page, text }) {
         </aside>
       </div>
       <p className="integrity-note">{locale === "zh" ? "公开资源用于预习与复习，不替代 LearnJCU 课件、Subject Outline 或老师对评估任务的说明。" : "Public resources support preparation and revision; they do not replace LearnJCU materials, the Subject Outline or assessment instructions."}</p>
+    </div>
+  );
+}
+
+function OpenResourceLibrary({ locale }) {
+  const [activeTopicId, setActiveTopicId] = useState(openLearningTopics[0].id);
+  const activeTopic = openLearningTopics.find((topic) => topic.id === activeTopicId);
+
+  const recommendUrl = `${resourceRecommendationUrl}?${new URLSearchParams({
+    title: "[公开资源推荐] ",
+    body: locale === "zh"
+      ? "推荐人（老师 / Tutor / 学生）：\n学科：\n资源名称：\n公开链接：\n推荐理由：\n适合的 JCU 课程：\n是否免费：是 / 否\n"
+      : "Recommender (teacher / tutor / student):\nDiscipline:\nResource title:\nPublic URL:\nWhy it is useful:\nRelevant JCU subjects:\nFree to access: yes / no\n",
+  }).toString()}`;
+
+  return (
+    <div className="study-mode-panel open-resource-panel" role="tabpanel" id="open-resource-panel">
+      <div className="open-resource-intro">
+        <div>
+          <span className="study-kicker">OPEN LEARNING LIBRARY</span>
+          <h2>{locale === "zh" ? "按学科找到真正能学完的免费资源" : "Free resources organised by discipline"}</h2>
+          <p>{locale === "zh" ? "首批覆盖机器学习、线性代数、概率统计、Python、电子与网络安全。每项都标注平台、语言、难度和使用建议。" : "The first release covers machine learning, linear algebra, probability, Python, electronics and cybersecurity, with platform, language, level and study guidance."}</p>
+        </div>
+        <a className="recommend-resource-link" href={recommendUrl} target="_blank" rel="noreferrer">
+          <Sparkle size={19} weight="fill" aria-hidden="true" />
+          <span>
+            <strong>{locale === "zh" ? "老师 / Tutor 推荐资源" : "Teacher / tutor recommendations"}</strong>
+            <small>{locale === "zh" ? "提交后核实，再加入正式列表" : "Reviewed before joining the library"}</small>
+          </span>
+          <ArrowSquareOut size={17} aria-hidden="true" />
+        </a>
+      </div>
+
+      <div className="resource-topic-tabs" role="tablist" aria-label={locale === "zh" ? "公开资源学科" : "Open resource disciplines"}>
+        {openLearningTopics.map((topic) => (
+          <button
+            type="button"
+            role="tab"
+            aria-selected={topic.id === activeTopicId}
+            className={topic.id === activeTopicId ? "active" : ""}
+            key={topic.id}
+            onClick={() => setActiveTopicId(topic.id)}
+          >
+            {topic.title[locale]}
+          </button>
+        ))}
+      </div>
+
+      <section className="resource-topic" aria-live="polite">
+        <header>
+          <div>
+            <span>{locale === "zh" ? "当前学科" : "Current discipline"}</span>
+            <h3>{activeTopic.title[locale]}</h3>
+            <p>{activeTopic.description[locale]}</p>
+          </div>
+          <div className="resource-prerequisite">
+            <Books size={19} weight="fill" aria-hidden="true" />
+            <span>{locale === "zh" ? "开始前" : "Before you start"}</span>
+            <strong>{activeTopic.prerequisite[locale]}</strong>
+          </div>
+        </header>
+
+        <div className="open-resource-grid">
+          {activeTopic.resources.map((resource) => (
+            <a href={resource.url} target="_blank" rel="noreferrer" key={resource.url}>
+              <div className="resource-card-topline">
+                <span>{resource.platform}</span>
+                <ArrowSquareOut size={17} aria-hidden="true" />
+              </div>
+              <PlayCircle size={31} weight="duotone" aria-hidden="true" />
+              <h4>{resource.title}</h4>
+              <p className="resource-provider">{resource.provider}</p>
+              <p>{resource.note[locale]}</p>
+              <div className="resource-meta">
+                <span>{resource.language[locale]}</span>
+                <span>{resource.level[locale]}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <p className="integrity-note">{locale === "zh" ? "筛选标准：免费公开、来源可追溯、内容结构完整。第三方平台的可用性和字幕可能变化；正式考核仍以 Subject Outline 与授课老师要求为准。" : "Selection criteria: free public access, traceable source and coherent teaching structure. Third-party availability and captions can change; the Subject Outline and teaching team remain authoritative for assessment."}</p>
     </div>
   );
 }
@@ -244,8 +332,8 @@ export function StudyPage({ locale, campusId }) {
         eyebrow={`${page.eyebrow} · ${campus.name[locale]}`}
         title={page.title}
         intro={page.intro}
-        image={campus.image.src}
-        source={campus.image.source}
+        image={campus.studyImage.src}
+        source={campus.studyImage.source}
         sourceLabel={text.source}
         alt={`${campus.name[locale]} · ${campus.traditionalName}`}
       />
@@ -271,6 +359,17 @@ export function StudyPage({ locale, campusId }) {
             <button
               type="button"
               role="tab"
+              aria-controls="open-resource-panel"
+              aria-selected={activeSection === "open"}
+              className={activeSection === "open" ? "active" : ""}
+              onClick={() => setActiveSection("open")}
+            >
+              <PlayCircle size={19} weight={activeSection === "open" ? "fill" : "regular"} />
+              {page.publicMode}
+            </button>
+            <button
+              type="button"
+              role="tab"
               aria-controls="joint-pathway-panel"
               aria-selected={activeSection === "joint"}
               className={activeSection === "joint" ? "active" : ""}
@@ -282,11 +381,9 @@ export function StudyPage({ locale, campusId }) {
           </div>
         </div>
 
-        {activeSection === "jcu" ? (
-          <CourseLibrary locale={locale} page={page} text={text} />
-        ) : (
-          <JointPathway locale={locale} />
-        )}
+        {activeSection === "jcu" && <CourseLibrary locale={locale} page={page} text={text} />}
+        {activeSection === "open" && <OpenResourceLibrary locale={locale} />}
+        {activeSection === "joint" && <JointPathway locale={locale} />}
 
         <p className="integrity-note study-integrity">{page.notice}</p>
       </section>
