@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, List, WaveSine, X } from "@phosphor-icons/react";
 import { copy, navigation } from "./data/content.js";
+import { CampusSelector } from "./components/CampusSelector.jsx";
 import {
   browserPathForRoute,
   normalizePath,
@@ -8,17 +9,32 @@ import {
   routePathFromBrowserPath,
 } from "./router.js";
 import { HomePage } from "./pages/HomePage.jsx";
+import { CampusPage } from "./pages/CampusPage.jsx";
 import { LifePage } from "./pages/LifePage.jsx";
 import { OpportunitiesPage } from "./pages/OpportunitiesPage.jsx";
+import { MarketPage } from "./pages/MarketPage.jsx";
+import { CareerPage } from "./pages/CareerPage.jsx";
+import { AboutPage } from "./pages/AboutPage.jsx";
+import { SetupPage } from "./pages/SetupPage.jsx";
+import { EssentialsPage } from "./pages/EssentialsPage.jsx";
 import { StudyPage } from "./pages/StudyPage.jsx";
 
 export function App() {
   const basePath = import.meta.env.BASE_URL;
   const [locale, setLocale] = useState("zh");
+  const [campusId, setCampusId] = useState(() => window.localStorage.getItem("tropic-loop-campus") || "cairns");
   const [path, setPath] = useState(() => routePathFromBrowserPath(window.location.pathname, basePath));
   const [menuOpen, setMenuOpen] = useState(false);
   const text = copy[locale];
   const routeId = routeIdForPath(path);
+  const activeNavId = ["setup", "essentials"].includes(routeId)
+    ? "life"
+    : routeId === "opportunities" ? "career" : routeId;
+
+  const selectCampus = (nextCampusId) => {
+    setCampusId(nextCampusId);
+    window.localStorage.setItem("tropic-loop-campus", nextCampusId);
+  };
 
   useEffect(() => {
     const handlePopState = () => {
@@ -41,10 +57,16 @@ export function App() {
   };
 
   const renderPage = () => {
-    if (routeId === "study") return <StudyPage locale={locale} />;
-    if (routeId === "life") return <LifePage locale={locale} />;
-    if (routeId === "opportunities") return <OpportunitiesPage locale={locale} />;
-    return <HomePage locale={locale} onNavigate={navigate} />;
+    if (routeId === "campus") return <CampusPage locale={locale} campusId={campusId} />;
+    if (routeId === "study") return <StudyPage locale={locale} campusId={campusId} />;
+    if (routeId === "life") return <LifePage locale={locale} campusId={campusId} onNavigate={navigate} />;
+    if (routeId === "market") return <MarketPage locale={locale} campusId={campusId} />;
+    if (routeId === "career") return <CareerPage locale={locale} campusId={campusId} />;
+    if (routeId === "about") return <AboutPage locale={locale} />;
+    if (routeId === "opportunities") return <OpportunitiesPage locale={locale} campusId={campusId} />;
+    if (routeId === "setup") return <SetupPage locale={locale} campusId={campusId} />;
+    if (routeId === "essentials") return <EssentialsPage locale={locale} campusId={campusId} />;
+    return <HomePage locale={locale} campusId={campusId} onCampusChange={selectCampus} onNavigate={navigate} />;
   };
 
   return (
@@ -67,8 +89,8 @@ export function App() {
             {navigation.map((item) => (
               <a
                 href={browserPathForRoute(item.path, basePath)}
-                aria-current={routeId === item.id ? "page" : undefined}
-                className={routeId === item.id ? "active" : ""}
+                aria-current={activeNavId === item.id ? "page" : undefined}
+                className={activeNavId === item.id ? "active" : ""}
                 key={item.id}
                 onClick={(event) => {
                   event.preventDefault();
@@ -81,6 +103,7 @@ export function App() {
           </nav>
 
           <div className="header-actions">
+            <CampusSelector campusId={campusId} locale={locale} onChange={selectCampus} compact />
             <div className="language-switch" aria-label="Language">
               <button className={locale === "zh" ? "active" : ""} type="button" onClick={() => setLocale("zh")}>
                 中文
@@ -104,11 +127,12 @@ export function App() {
 
         {menuOpen && (
           <nav className="mobile-nav" aria-label={locale === "zh" ? "移动端导航" : "Mobile navigation"}>
+            <CampusSelector campusId={campusId} locale={locale} onChange={selectCampus} />
             {navigation.map((item) => (
               <a
                 href={browserPathForRoute(item.path, basePath)}
-                aria-current={routeId === item.id ? "page" : undefined}
-                className={routeId === item.id ? "active" : ""}
+                aria-current={activeNavId === item.id ? "page" : undefined}
+                className={activeNavId === item.id ? "active" : ""}
                 key={item.id}
                 onClick={(event) => {
                   event.preventDefault();
@@ -128,7 +152,7 @@ export function App() {
       <footer>
         <p>{text.disclaimer}</p>
         <div>
-          <span>{locale === "zh" ? "凯恩斯首发 · 北昆士兰" : "Cairns edition · North Queensland"}</span>
+          <span>{locale === "zh" ? "凯恩斯 · 汤斯维尔 · 北昆士兰" : "Cairns · Townsville · North Queensland"}</span>
           <span aria-hidden="true">|</span>
           <time dateTime="2026-08-15">15 August 2026</time>
         </div>

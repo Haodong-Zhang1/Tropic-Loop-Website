@@ -1,6 +1,6 @@
-import { navigation } from "./data/content.js";
+import { appRoutes } from "./data/content.js";
 
-const knownPaths = new Set(navigation.map((item) => item.path));
+const knownPaths = new Set(appRoutes.map((item) => item.path));
 
 export function normalizePath(pathname = "/") {
   const cleanPath = `/${pathname}`.replace(/\/{2,}/g, "/").replace(/\/$/, "") || "/";
@@ -9,7 +9,7 @@ export function normalizePath(pathname = "/") {
 
 export function routeIdForPath(pathname) {
   const path = normalizePath(pathname);
-  return navigation.find((item) => item.path === path)?.id ?? "home";
+  return appRoutes.find((item) => item.path === path)?.id ?? "home";
 }
 
 function normalizeBasePath(basePath = "/") {

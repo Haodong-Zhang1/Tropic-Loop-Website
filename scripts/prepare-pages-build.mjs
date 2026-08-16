@@ -2,7 +2,7 @@
 import { copyFileSync, existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { navigation } from "../src/data/content.js";
+import { appRoutes } from "../src/data/content.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const client = path.join(root, "dist", "client");
@@ -12,7 +12,7 @@ if (!existsSync(index)) throw new Error(`Missing GitHub Pages build input: ${ind
 
 copyFileSync(index, path.join(client, "404.html"));
 
-for (const item of navigation) {
+for (const item of appRoutes) {
   if (item.path === "/") continue;
   const routeDirectory = path.join(client, item.path.slice(1));
   mkdirSync(routeDirectory, { recursive: true });

@@ -1,71 +1,53 @@
-# Cairns Loop design QA
+# Tropic Loop community, career and author design QA
 
 ## Comparison target
 
-- Source visual truth: `design/selected-homepage.png`
-- Final homepage screenshot: `qa/home-routed-1536-final.jpg`
-- Full-view side-by-side comparison: `qa/comparison-home-routed-final.jpg`
-- Focused hero comparison: `qa/comparison-home-routed-hero-final.jpg`
-- Study route evidence: `qa/study-page-1536.png`
-- Life route evidence: `qa/life-page-1536.jpg`
-- Opportunities route evidence: `qa/opportunities-page-1536-final.jpg`
-- Responsive evidence: `qa/life-page-mobile-390.jpg`
-
-## Normalization and state
-
+- Source visual truth: `design/selected-homepage.png` — the user-selected Tropic Loop desktop visual system.
+- Primary implementation screenshot: `qa/community-desktop.png`.
+- Supporting implementation screenshots: `qa/career-desktop.png`, `qa/about-desktop.png`, `qa/community-mobile-390.png`, and `qa/career-mobile-390.png`.
 - Source pixels: 1536 × 1024.
-- Final homepage pixels: 1536 × 1024.
-- CSS viewport: 1536 × 1024; `devicePixelRatio: 1` under the explicit QA viewport.
-- Density normalization: none required for the final comparison.
-- State: Chinese, weekly homepage, search result closed, mobile menu closed.
-- The selected source contains the study-path table on the homepage. Its absence in the final homepage is intentional: the user explicitly moved Study, Life and Opportunities into distinct routes while keeping the weekly view at `/`.
+- Desktop implementation pixels: 1536 × 1024.
+- Mobile implementation pixels: 390 × 844.
+- Desktop CSS viewport: 1536 × 1024; device scale factor 1.
+- Mobile CSS viewport: 390 × 844; device scale factor 1.
+- Density normalization: none required; source and desktop implementation use the same pixel and CSS dimensions.
+- State: Chinese, Cairns selected. Community is shown on the Second-hand tab; Career and About are shown in their default states.
+- Comparison scope: the source is the selected homepage rather than a page-specific mock for the three new routes. The comparison therefore checks faithful extension of the existing navigation, typography, image treatment, spacing rhythm, colors and component language rather than identical page content.
+- Full-view evidence: `design/selected-homepage.png` and the final `qa/community-desktop.png` were opened together in one multi-image comparison input after the final density fix.
+- Focused evidence: no separate crop was needed because the 1536 × 1024 captures keep the navigation, hero typography, image crop, tabs, notice and listing-card details readable. The form state was separately inspected in the browser DOM.
 
-## Browser verification
+## Primary interactions tested
 
-- Routing: `/`, `/study`, `/life` and `/opportunities` each rendered their own page and correct active-navigation state.
-- History: browser Back returned from Opportunities to Life; Forward restored Opportunities.
-- Direct paths: loading `/opportunities` directly rendered the app route through the Vite/static fallback.
-- Search: queried `MA3831`; the bilingual result appeared and opened `/study`.
-- Language: switched to English and navigated to Study; the English state persisted across the route change.
-- Study paths: selected Internet of Things; three IoT rows appeared and the course panel updated to `IOT 01`.
-- Mobile menu: at 390 × 844, the four-page menu opened, Life navigation worked and no horizontal overflow was present (`scrollWidth: 390`).
-- Images: the JCU Cairns Campus, Ideas Lab and John Grey Hall photographs rendered with controlled crops.
-- Console: no warnings or errors were recorded during the final desktop and mobile checks.
+- Opened all three new routes from the desktop navigation: Community, Career and About.
+- Switched Community between Second-hand and Bring one thing.
+- Opened and closed the posting form.
+- Filled the errand title and description and confirmed a commission below AUD 1 is rejected by the numeric control.
+- Confirmed image upload accepts image files and the UI states the 1.2 MB limit.
+- Confirmed the Career page contains JCU CareerHub, Fair Work Ombudsman and the planned no-payment state.
+- Confirmed the About page contains only Haodong Zhang as the current author and opens the project GitHub link.
+- Opened the mobile menu at 390 px, confirmed all seven product areas are present, and navigated from Community to Career.
+- Checked browser logs: no errors or warnings; only Vite development messages and the React DevTools information notice.
 
 ## Findings
 
-No actionable P0, P1 or P2 differences remain.
+No actionable P0, P1 or P2 finding remains.
 
-### Required fidelity surfaces
-
-- Fonts and typography: the soft humanist system stack, regular display weight and medium supporting weights preserve the selected visual direction. Headline wrapping, navigation scale and bilingual hierarchy remain consistent across all four pages.
-- Spacing and layout rhythm: the 47.4/52.6 homepage hero, 65 px weekly strip, two-card image grid, 64 px desktop margins and compact footer closely track the source. The new routed pages reuse the same section rhythm, radii and divider treatment.
-- Colors and visual tokens: off-white paper, tropical green, charcoal text, warm-gray dividers and restrained pale-lime selected states are reused without gradients or visual-system drift.
-- Image quality and asset fidelity: the three selected photographs are used directly with stable object-fit crops. No visible photo, logo or non-standard image asset is replaced with CSS art, a placeholder or a handcrafted SVG.
-- Copy and content: the homepage keeps the selected hero, weekly items and campus teaser copy. Study, Life and Opportunities now contain clearly separated first-release content; planned collaborations and unconfirmed placements are explicitly labelled as in preparation.
+- Fonts and typography: the implementation retains the selected Avenir Next / PingFang SC stack, regular display weight, compact green eyebrow labels and restrained small-copy hierarchy. The About headline was reduced from a 78 px maximum to 68 px so the final Chinese character no longer forms an orphan line.
+- Spacing and layout rhythm: the 64 px desktop gutters, split hero, rounded image edge, fine divider rhythm, compact pill controls and 16–18 px card radii match the established system. The Community grid now fills three columns instead of leaving an unbalanced blank region.
+- Colors and visual tokens: warm paper, white surfaces, tropical green, pale green information panels, lime active indicators and quiet grey borders remain consistent with the selected source.
+- Image quality and assets: Community and Career reuse official JCU photography already present in the product, with the same source link affordance and responsive crop. Standard UI symbols use Phosphor icons; no placeholder image, custom SVG, CSS drawing or emoji asset was introduced.
+- Copy and content: example community posts are explicitly labelled as samples; the device-only storage boundary, minimum commission, payment boundary, safety rules and future paid-content state are stated without implying that a public marketplace or payment system already exists.
+- Responsiveness and accessibility: the 390 × 844 capture has no horizontal clipping, the mobile menu closes after navigation, tabs use `role=tab` and `aria-selected`, form fields have visible labels, focus styles are retained, and primary controls remain practical tap targets.
 
 ## Comparison history
 
-### Earlier selected-prototype iterations
-
-- Earlier findings: headline weight was too heavy, lower sections were too tall and course rows had excessive visual weight.
-- Fixes: softened headline and row weights, tightened section density and aligned the hero/search rhythm.
-- Post-fix evidence: `qa/implementation-desktop-final.png` and the earlier focused comparison files.
-
-### Routed-page iteration
-
-- Earlier findings: the first routed build left the short homepage footer above the viewport bottom; the flex footer border did not span the full page; informational Life cards exposed non-functional action buttons.
-- Fixes: made the app shell a full-height column, pinned the footer to the bottom with full width and removed controls that did not yet have a real destination.
-- Post-fix evidence: `qa/home-routed-1536-final.jpg`, `qa/comparison-home-routed-final.jpg`, `qa/life-page-1536.jpg` and `qa/opportunities-page-1536-final.jpg`.
-
-## Open questions
-
-- No visual or interaction blocker remains. The Life and Opportunities datasets are intentionally first-release content and should be revised after student testing.
-- Photograph reuse is recorded as confirmed by the project owner on 15 August 2026 and is not treated as a release blocker.
+- Pass 1 — P2: the Community desktop state showed only one sample card, creating a large empty region unlike the balanced density of the selected source. Fix: added clearly labelled sample entries so the default desktop grid presents three cards. Post-fix evidence: `qa/community-desktop.png` in the final multi-image comparison.
+- Pass 1 — P2: the About desktop headline wrapped its last Chinese character onto a separate line. Fix: reduced the display maximum from 78 px to 68 px. Post-fix evidence: `qa/about-desktop.png`.
+- Pass 2: the final source-versus-Community comparison and the revised About capture contain no remaining actionable P0/P1/P2 issue.
 
 ## Follow-up polish
 
-- P3: replace hotlinked images with locally optimized approved WebP/AVIF files before a public launch.
-- P3: student-test the mobile information density and the wording of the planned-status labels.
+- P3: replace sample marketplace cards with real student posts once moderation and shared storage are implemented.
+- P3: add an author portrait only if Haodong Zhang supplies one; the current monogram intentionally avoids inventing a photo.
 
 final result: passed

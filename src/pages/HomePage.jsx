@@ -1,19 +1,30 @@
 import { useMemo, useState } from "react";
 import { ArrowRight, MagnifyingGlass } from "@phosphor-icons/react";
+import { CampusSelector } from "../components/CampusSelector.jsx";
 import { LocationCard } from "../components/LocationCard.jsx";
-import { copy, imageSources, locations, studyPaths, weeklyItems } from "../data/content.js";
+import {
+  buildingDirectory,
+  campusLocations,
+  campuses,
+  copy,
+  staffDirectory,
+  studyPaths,
+  weeklyItems,
+} from "../data/content.js";
 
-export function HomePage({ locale, onNavigate }) {
+export function HomePage({ locale, campusId, onCampusChange, onNavigate }) {
   const [query, setQuery] = useState("");
   const [searchResult, setSearchResult] = useState(null);
   const text = copy[locale];
   const home = text.home;
+  const campus = campuses[campusId];
+  const locations = campusLocations[campusId];
 
   const searchableItems = useMemo(
     () => [
       ...studyPaths.flatMap((path) =>
         path.courses.map((course) => ({
-          route: "/study",
+          url: course.url,
           title: `${course.code} · ${locale === "zh" ? course.zh : course.title}`,
           detail: locale === "zh" ? course.title : course.zh,
           keywords: `${course.code} ${course.title} ${course.zh}`,
@@ -31,8 +42,20 @@ export function HomePage({ locale, onNavigate }) {
         detail: locale === "zh" ? "来自本周重点" : "From this week's highlights",
         keywords: `${item.zh} ${item.en} 公交 bus 电话卡 sim 活动 events`,
       })),
+      ...buildingDirectory.filter((building) => building.campus === campusId).map((building) => ({
+        url: campus.maps.interactive,
+        title: `${building.code} · ${building.name}`,
+        detail: `${campus.name[locale]} · ${text.officialMap}`,
+        keywords: `${building.code} ${building.name} building 楼 教学楼 办公室`,
+      })),
+      ...staffDirectory.filter((person) => person.campus === "both" || person.campus === campusId).map((person) => ({
+        url: person.url,
+        title: person.name[locale],
+        detail: person.office ? `${person.office.code} · ${person.office.name}` : person.role[locale],
+        keywords: `${person.name.zh} ${person.name.en} tutor lecturer supervisor 导师 老师 staff office 办公室`,
+      })),
     ],
-    [locale],
+    [campus, campusId, locale, locations, text.officialMap],
   );
 
   const runSearch = (event) => {
@@ -54,6 +77,7 @@ export function HomePage({ locale, onNavigate }) {
     <>
       <section className="hero" aria-labelledby="hero-heading">
         <div className="hero-content">
+          <CampusSelector campusId={campusId} locale={locale} onChange={onCampusChange} />
           <p className="eyebrow">{home.eyebrow}</p>
           <h1 id="hero-heading">
             {home.headline.split("\n").map((line) => <span key={line}>{line}</span>)}
@@ -83,13 +107,11 @@ export function HomePage({ locale, onNavigate }) {
                   <>
                     <span>{searchResult.title}</span>
                     <small>{searchResult.detail}</small>
-                    <button
-                      type="button"
-                      onClick={() => onNavigate(searchResult.route)}
-                    >
-                      {text.openResult}
-                      <ArrowRight size={16} aria-hidden="true" />
-                    </button>
+                    {searchResult.url ? (
+                      <a href={searchResult.url} target="_blank" rel="noreferrer">{text.openResult}<ArrowRight size={16} aria-hidden="true" /></a>
+                    ) : (
+                      <button type="button" onClick={() => onNavigate(searchResult.route)}>{text.openResult}<ArrowRight size={16} aria-hidden="true" /></button>
+                    )}
                   </>
                 )}
               </div>
@@ -99,8 +121,8 @@ export function HomePage({ locale, onNavigate }) {
 
         <figure className="hero-media">
           <img
-            src={imageSources.campus.src}
-            alt={locale === "zh" ? "JCU 凯恩斯校区的学生与热带校园" : "Students walking through JCU Cairns campus"}
+            src={campus.image.src}
+            alt={`${campus.name[locale]} · ${campus.traditionalName}`}
           />
         </figure>
       </section>

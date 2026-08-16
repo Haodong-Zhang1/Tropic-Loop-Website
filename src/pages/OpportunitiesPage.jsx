@@ -1,21 +1,22 @@
 import { ArrowRight } from "@phosphor-icons/react";
 import { PageIntro } from "../components/PageIntro.jsx";
-import { copy, imageSources, opportunityItems } from "../data/content.js";
+import { campuses, copy, opportunityItems } from "../data/content.js";
 
-export function OpportunitiesPage({ locale }) {
+export function OpportunitiesPage({ locale, campusId }) {
   const text = copy[locale];
   const page = text.opportunities;
+  const campus = campuses[campusId];
 
   return (
     <>
       <PageIntro
-        eyebrow={page.eyebrow}
+        eyebrow={`${page.eyebrow} · ${campus.name[locale]}`}
         title={page.title}
         intro={page.intro}
-        image={imageSources.ideasLab.src}
-        source={imageSources.ideasLab.source}
+        image={campus.opportunityImage.src}
+        source={campus.opportunityImage.source}
         sourceLabel={text.source}
-        alt={locale === "zh" ? "JCU Ideas Lab 内部空间" : "Interior of JCU Ideas Lab"}
+        alt={campusId === "cairns" ? (locale === "zh" ? "JCU Ideas Lab 内部空间" : "Interior of JCU Ideas Lab") : `${campus.name[locale]} · ${campus.traditionalName}`}
       />
 
       <section className="page-section opportunity-section" aria-labelledby="opportunity-heading">
@@ -39,10 +40,10 @@ export function OpportunitiesPage({ locale }) {
 
       <section className="source-band" aria-labelledby="ideas-place-heading">
         <div>
-          <span>JCU IDEAS LAB</span>
+          <span>{campusId === "cairns" ? "JCU IDEAS LAB · D4" : "ENGINEERING & INNOVATION PLACE · 506"}</span>
           <h2 id="ideas-place-heading">{page.placeTitle}</h2>
         </div>
-        <a href={imageSources.ideasLab.source} target="_blank" rel="noreferrer">
+        <a href={campus.maps.interactive} target="_blank" rel="noreferrer">
           {text.source}<ArrowRight size={18} />
         </a>
       </section>
