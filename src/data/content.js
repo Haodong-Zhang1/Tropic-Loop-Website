@@ -9,7 +9,31 @@ export const navigation = [
   { id: "about", path: "/about", label: { zh: "作者", en: "About" } },
 ];
 
-export const mobilePrimaryNavigationIds = ["home", "study", "life", "market"];
+export const navigationGroups = [
+  {
+    id: "academic",
+    label: { zh: "学业", en: "Study" },
+    description: { zh: "课程、科研与发展", en: "Courses, research and careers" },
+    itemIds: ["study", "career"],
+    landingPath: "/study",
+  },
+  {
+    id: "support",
+    label: { zh: "学生支持", en: "Student support" },
+    description: { zh: "校园与生活帮助", en: "Campus and everyday help" },
+    itemIds: ["campus", "life"],
+    landingPath: "/campus",
+  },
+  {
+    id: "community",
+    label: { zh: "社群", en: "Community" },
+    description: { zh: "文化与学生互助", en: "Culture and student exchange" },
+    itemIds: ["culture", "market"],
+    landingPath: "/culture",
+  },
+];
+
+export const mobilePrimaryNavigationIds = ["home", "academic", "support", "community"];
 
 export const appRoutes = [
   ...navigation,
@@ -398,16 +422,12 @@ export const copy = {
     },
     study: {
       eyebrow: "JCU 学业导航",
-      title: "先看懂课程，\n再开始投入。",
-      intro: "查 JCU 课程，也看懂 JCU–XUT 2+2 与 3+2 的培养路径、学分边界和每一步要确认的材料。",
-      sectionTitle: "规划你的学业路径",
-      jcuMode: "JCU 课程库",
-      publicMode: "公开学习资源",
-      jointMode: "JCU–XUT 中外合办",
-      selected: "当前课程",
-      toolkit: "首批学习工具",
-      toolkitItems: ["双语关键术语", "每周复习路线", "公开课程资源"],
-      notice: "学习页只提供理解、规划与复习支持，不代写或代做评估任务。",
+      title: "看懂课程，\n也学会学术表达。",
+      intro: "先用 JCU 官方信息确认学位、校区和选课入口，再用学术英语工具拆解任务、建立论证并清楚表达。",
+      sectionTitle: "课程资讯与学术英语",
+      jcuMode: "JCU 课程资讯",
+      academicMode: "学术英语",
+      notice: "课程、开课校区和培养结构可能更新；正式选课请以当年 JCU Handbook、Enrolment Planner 与学院建议为准。",
     },
     life: {
       eyebrow: "北昆士兰生活",
@@ -505,16 +525,12 @@ export const copy = {
     },
     study: {
       eyebrow: "STUDY AT JCU",
-      title: "Understand the course.\nThen make a plan.",
-      intro: "Explore JCU subjects and understand the credit, timing and confirmation points across JCU–XUT 2+2 and 3+2 pathways.",
-      sectionTitle: "Plan your study pathway",
-      jcuMode: "JCU subject library",
-      publicMode: "Open learning resources",
-      jointMode: "JCU–XUT joint pathways",
-      selected: "Selected course",
-      toolkit: "First-release study tools",
-      toolkitItems: ["Bilingual key terms", "Weekly revision route", "Public learning resources"],
-      notice: "Study support covers understanding, planning and revision. It does not provide assessment answers.",
+      title: "Understand the course.\nExpress your thinking.",
+      intro: "Confirm degrees, locations and enrolment links through official JCU sources, then use Academic English tools to unpack tasks, build an argument and communicate clearly.",
+      sectionTitle: "Course information and Academic English",
+      jcuMode: "JCU course guide",
+      academicMode: "Academic English",
+      notice: "Courses, locations and study structures can change. Confirm formal enrolment against the current JCU Handbook, Enrolment Planner and college advice.",
     },
     life: {
       eyebrow: "LIVE IN NORTH QUEENSLAND",
@@ -1379,6 +1395,198 @@ export const studentCultureTips = [
 ];
 
 export const cultureTipSubmissionUrl = "https://github.com/Haodong-Zhang1/Tropic-Loop-Website/issues/new";
+
+export const jcuCourseAreas = [
+  {
+    id: "information-technology",
+    code: "103110",
+    title: "Bachelor of Information Technology",
+    label: { zh: "信息技术", en: "Information Technology" },
+    status: { zh: "2026 课程信息已核实", en: "2026 course information verified" },
+    statusTone: "verified",
+    duration: { zh: "3 年全日制", en: "3 years full-time" },
+    locations: { zh: "凯恩斯、汤斯维尔、布里斯班、在线", en: "Cairns, Townsville, Brisbane and online" },
+    intakes: { zh: "2 月、5 月、9 月", en: "February, May and September" },
+    summary: {
+      zh: "覆盖软件工程、网络、云计算、网络安全、机器学习与人工智能，并在最后阶段提供实习或项目型 Work Integrated Learning（WIL，工作整合学习）选择。",
+      en: "Covers software engineering, networks, cloud computing, cybersecurity, machine learning and AI, with internship or project-based Work Integrated Learning options near the end of the degree.",
+    },
+    highlights: {
+      zh: ["Software Engineering 与应用开发", "Cybersecurity、Networking 与 Cloud", "Machine Learning 与 Artificial Intelligence", "实习、多学科项目或独立项目"],
+      en: ["Software engineering and application development", "Cybersecurity, networking and cloud", "Machine learning and artificial intelligence", "Internship, multidisciplinary or independent project"],
+    },
+    links: [
+      { label: { zh: "JCU 课程页", en: "JCU course page" }, url: "https://www.jcu.edu.au/courses/bachelor-of-information-technology" },
+      { label: { zh: "2026 Handbook", en: "2026 Handbook" }, url: "https://handbook.jcu.edu.au/course/2026/103110" },
+      { label: { zh: "选课计划", en: "Enrolment planner" }, url: "https://www.jcu.edu.au/course-enrolment-planners" },
+    ],
+  },
+  {
+    id: "science",
+    code: "115810",
+    title: "Bachelor of Science",
+    label: { zh: "理学", en: "Science" },
+    status: { zh: "2026 课程信息已核实", en: "2026 course information verified" },
+    statusTone: "verified",
+    duration: { zh: "3 年全日制", en: "3 years full-time" },
+    locations: { zh: "凯恩斯、汤斯维尔；专业可用校区不同", en: "Cairns and Townsville; major availability varies" },
+    intakes: { zh: "2 月、9 月", en: "February and September" },
+    summary: {
+      zh: "第一年建立科学基础，之后选择一个或两个 Major（主修）。JCU 当前列出 12 个主修方向，包括 Data Science、Bioinformatics、Marine Biology、Mathematics 等。",
+      en: "Build science foundations in first year, then choose one or two majors. JCU currently lists 12 majors including Data Science, Bioinformatics, Marine Biology and Mathematics.",
+    },
+    highlights: {
+      zh: ["可选择一个或两个主修", "Data Science 与 Bioinformatics", "Marine Biology、Aquaculture 与环境科学", "Mathematics、Chemistry、Physics 等基础科学"],
+      en: ["Choose one or two majors", "Data Science and Bioinformatics", "Marine Biology, Aquaculture and environmental science", "Mathematics, Chemistry, Physics and other foundational sciences"],
+    },
+    links: [
+      { label: { zh: "JCU 课程页", en: "JCU course page" }, url: "https://www.jcu.edu.au/courses/bachelor-of-science" },
+      { label: { zh: "2026 Handbook", en: "2026 Handbook" }, url: "https://handbook.jcu.edu.au/course/2026/115810" },
+      { label: { zh: "2026 选课计划", en: "2026 enrolment plans" }, url: "https://www.jcu.edu.au/course-enrolment-planners" },
+    ],
+  },
+  {
+    id: "technology-innovation",
+    code: "118410",
+    title: "Bachelor of Technology and Innovation",
+    label: { zh: "技术与创新", en: "Technology and Innovation" },
+    status: { zh: "当前招生状态需确认", en: "Current admission status needs confirmation" },
+    statusTone: "caution",
+    duration: { zh: "历史资料：3 年全日制", en: "Archived information: 3 years full-time" },
+    locations: { zh: "历史资料：凯恩斯、汤斯维尔", en: "Archived information: Cairns and Townsville" },
+    intakes: { zh: "当前 JCU 招生页未列出", en: "Not listed on the current JCU course finder" },
+    summary: {
+      zh: "JCU 的正式名称是 Bachelor of Technology and Innovation。2022 官方资料曾列出 Data Science、Information Technology、Sensor Technologies and the Internet of Things 等方向，但当前课程搜索页未列为开放招生项目。",
+      en: "The official JCU title is Bachelor of Technology and Innovation. Archived 2022 material listed Data Science, Information Technology, and Sensor Technologies and the Internet of Things, but it is not shown as an open course in the current course finder.",
+    },
+    highlights: {
+      zh: ["不要按旧 Study Plan 自行选课", "现有学生先检查 eStudent 与个人 Study Plan", "新申请者先向 JCU Future Students 确认", "确认后再决定是否保留此课程入口"],
+      en: ["Do not enrol from an archived study plan", "Current students should check eStudent and their personal study plan", "New applicants should confirm with JCU Future Students", "Keep this entry only after its current status is confirmed"],
+    },
+    links: [
+      { label: { zh: "JCU 当前课程搜索", en: "Current JCU course finder" }, url: "https://www.jcu.edu.au/courses" },
+      { label: { zh: "2022 官方选课计划（归档）", en: "Archived official 2022 study plans" }, url: "https://www.jcu.edu.au/college-of-science-and-engineering/student-resources/2022-study-plans" },
+      { label: { zh: "联系 Future Students", en: "Contact Future Students" }, url: "https://www.jcu.edu.au/future-students/contact-us" },
+    ],
+  },
+];
+
+export const academicEnglishModules = [
+  {
+    id: "unpack",
+    number: "01",
+    title: { zh: "先拆任务", en: "Unpack the task" },
+    description: { zh: "圈出 task verb、主题、范围、限制和评分标准，再决定要读什么、写什么。", en: "Identify the task verb, topic, scope, constraints and marking criteria before deciding what to read or write." },
+    prompt: { zh: "我需要完成什么动作？证据要支持哪一个结论？", en: "What action must I perform, and what conclusion must the evidence support?" },
+  },
+  {
+    id: "argument",
+    number: "02",
+    title: { zh: "建立论证", en: "Build an argument" },
+    description: { zh: "每一段用 claim（论点）、evidence（证据）、analysis（分析）和 link（回扣任务）形成闭环。", en: "Build each paragraph around a claim, evidence, analysis and a link back to the task." },
+    prompt: { zh: "这一段的中心句是否能被引用的证据真正支持？", en: "Does the cited evidence genuinely support this paragraph's central claim?" },
+  },
+  {
+    id: "style",
+    number: "03",
+    title: { zh: "控制语气", en: "Control the academic tone" },
+    description: { zh: "区分事实、推测和局限；用 hedging（审慎表达）避免把有限证据写成绝对结论。", en: "Separate fact, inference and limitation, and use hedging so limited evidence is not presented as certainty." },
+    prompt: { zh: "这句话需要写 is，还是更准确地写 suggests / may / is likely to？", en: "Should this sentence use is, or the more accurate suggests, may or is likely to?" },
+  },
+  {
+    id: "revise",
+    number: "04",
+    title: { zh: "引用与修订", en: "Reference and revise" },
+    description: { zh: "先检查逻辑与结构，再检查引用、语言和格式；不要只依赖拼写检查。", en: "Check logic and structure before references, language and formatting; do not rely on spellcheck alone." },
+    prompt: { zh: "读者能否从每一个主要结论追溯到来源？", en: "Can the reader trace every major conclusion to its source?" },
+  },
+];
+
+export const academicVocabularyGroups = [
+  {
+    id: "task-verbs",
+    title: { zh: "任务动词", en: "Assessment verbs" },
+    hint: { zh: "先判断老师要你做什么", en: "Identify what the task asks you to do" },
+    words: [
+      { term: "analyse", meaning: { zh: "拆分并解释各部分关系", en: "Break down and explain relationships" } },
+      { term: "evaluate", meaning: { zh: "按标准判断价值或质量", en: "Judge value or quality against criteria" } },
+      { term: "compare", meaning: { zh: "说明相似点与差异", en: "Identify similarities and differences" } },
+      { term: "justify", meaning: { zh: "用证据说明选择合理", en: "Support a choice with evidence" } },
+      { term: "synthesise", meaning: { zh: "整合多个来源形成新理解", en: "Combine sources into a new understanding" } },
+      { term: "critically appraise", meaning: { zh: "判断证据质量、偏差与局限", en: "Assess evidence quality, bias and limits" } },
+    ],
+  },
+  {
+    id: "argument",
+    title: { zh: "论证词汇", en: "Argument vocabulary" },
+    hint: { zh: "把观点与证据连接起来", en: "Connect claims and evidence" },
+    words: [
+      { term: "claim", meaning: { zh: "需要证据支持的论点", en: "A proposition requiring evidence" } },
+      { term: "evidence", meaning: { zh: "支持或反驳论点的材料", en: "Material supporting or challenging a claim" } },
+      { term: "assumption", meaning: { zh: "尚未被证明但被采用的前提", en: "An accepted but unproven premise" } },
+      { term: "rationale", meaning: { zh: "采用某方法或选择的理由", en: "The reason for a method or choice" } },
+      { term: "implication", meaning: { zh: "结果可能带来的含义", en: "What a result may mean" } },
+      { term: "limitation", meaning: { zh: "影响解释或推广的限制", en: "A constraint on interpretation or generalisation" } },
+    ],
+  },
+  {
+    id: "linking",
+    title: { zh: "逻辑连接", en: "Logical links" },
+    hint: { zh: "显示句子之间的逻辑关系", en: "Make relationships between ideas explicit" },
+    words: [
+      { term: "however", meaning: { zh: "转折：然而", en: "Contrast" } },
+      { term: "therefore", meaning: { zh: "结果：因此", en: "Result" } },
+      { term: "in contrast", meaning: { zh: "对比：相比之下", en: "Direct comparison" } },
+      { term: "for example", meaning: { zh: "举例", en: "Example" } },
+      { term: "whereas", meaning: { zh: "并列比较两种不同情况", en: "Compare two differing situations" } },
+      { term: "nevertheless", meaning: { zh: "承认前述情况后的转折", en: "Concession followed by contrast" } },
+    ],
+  },
+  {
+    id: "hedging",
+    title: { zh: "审慎表达", en: "Hedging" },
+    hint: { zh: "让结论强度与证据匹配", en: "Match the strength of a claim to the evidence" },
+    words: [
+      { term: "may / might", meaning: { zh: "表示可能，而非确定", en: "Express possibility rather than certainty" } },
+      { term: "suggests", meaning: { zh: "证据提示，但不足以完全证明", en: "Evidence points toward but does not prove" } },
+      { term: "appears to", meaning: { zh: "基于观察的谨慎判断", en: "A cautious observation" } },
+      { term: "is likely to", meaning: { zh: "有较高可能性", en: "A relatively strong probability" } },
+      { term: "to some extent", meaning: { zh: "在一定程度上", en: "A limited degree" } },
+      { term: "interpret cautiously", meaning: { zh: "提醒读者不要过度推断", en: "Warn against over-interpretation" } },
+    ],
+  },
+  {
+    id: "jcu-classroom",
+    title: { zh: "JCU 课堂词汇", en: "JCU classroom terms" },
+    hint: { zh: "看懂课程说明与反馈", en: "Understand subject guidance and feedback" },
+    words: [
+      { term: "rubric", meaning: { zh: "评分量表", en: "The marking guide" } },
+      { term: "criterion", meaning: { zh: "单项评分标准", en: "One marking standard" } },
+      { term: "weighting", meaning: { zh: "该任务占总成绩的比例", en: "How much a task contributes to the final grade" } },
+      { term: "due date", meaning: { zh: "截止日期与时间", en: "Submission deadline" } },
+      { term: "extension", meaning: { zh: "获批后的延期", en: "An approved deadline extension" } },
+      { term: "formative feedback", meaning: { zh: "用于改进、通常不直接计分的反馈", en: "Feedback intended to improve work, often ungraded" } },
+    ],
+  },
+];
+
+export const academicEnglishResources = [
+  {
+    title: { zh: "JCU Learning Centre", en: "JCU Learning Centre" },
+    description: { zh: "Academic Writing、English Language、Academic Skills、数学、统计与科学支持。", en: "Support for Academic Writing, English Language, Academic Skills, Maths, Statistics and Sciences." },
+    url: "https://www.jcu.edu.au/students/learning-centre",
+  },
+  {
+    title: { zh: "English as an Additional Language", en: "English as an Additional Language" },
+    description: { zh: "澳洲大学学习文化、Assessment、Academic English 与官方支持入口。", en: "Australian university culture, assessment, Academic English and official support." },
+    url: "https://www.jcu.edu.au/students/support/english-as-an-additional-language",
+  },
+  {
+    title: { zh: "预约 Learning Advisor", en: "Meet a Learning Advisor" },
+    description: { zh: "理解任务、规划写作、阅读与语言学习；由 JCU 官方服务确认预约方式。", en: "Get help with understanding tasks, planning writing, reading and language development." },
+    url: "https://www.jcu.edu.au/students/learningcentre/services-for-students",
+  },
+];
 
 export const studyPaths = [
   {

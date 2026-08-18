@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import {
   ArrowRight,
   BookOpenText,
+  CaretDown,
   Compass,
   DotsThree,
   House,
@@ -10,7 +11,7 @@ import {
   WaveSine,
   X,
 } from "@phosphor-icons/react";
-import { copy, mobilePrimaryNavigationIds, navigation } from "./data/content.js";
+import { copy, mobilePrimaryNavigationIds, navigation, navigationGroups } from "./data/content.js";
 import { CampusSelector } from "./components/CampusSelector.jsx";
 import {
   browserPathForRoute,
@@ -41,17 +42,21 @@ export function App() {
   const activeNavId = ["setup", "essentials"].includes(routeId)
     ? "life"
     : routeId === "opportunities" ? "career" : routeId;
+  const activeGroupId = navigationGroups.find((group) => group.itemIds.includes(activeNavId))?.id;
   const mobileIcons = {
     home: House,
-    study: BookOpenText,
-    life: Compass,
-    market: UsersThree,
+    support: Compass,
+    community: UsersThree,
+    academic: BookOpenText,
   };
-  const mobileNavigation = mobilePrimaryNavigationIds.map((id) => ({
-    ...navigation.find((item) => item.id === id),
-    Icon: mobileIcons[id],
-  }));
-  const moreIsActive = menuOpen || !mobilePrimaryNavigationIds.includes(activeNavId);
+  const mobileNavigation = mobilePrimaryNavigationIds.map((id) => {
+    if (id === "home") return { ...navigation.find((item) => item.id === id), Icon: mobileIcons[id] };
+    const group = navigationGroups.find((item) => item.id === id);
+    return { id, path: group.landingPath, label: group.label, Icon: mobileIcons[id] };
+  });
+  const moreIsActive = menuOpen || activeNavId === "about";
+  const homeNav = navigation.find((item) => item.id === "home");
+  const aboutNav = navigation.find((item) => item.id === "about");
 
   const selectCampus = (nextCampusId) => {
     setCampusId(nextCampusId);
@@ -109,20 +114,62 @@ export function App() {
           </a>
 
           <nav className="desktop-nav" aria-label={locale === "zh" ? "主导航" : "Primary navigation"}>
-            {navigation.map((item) => (
-              <a
-                href={browserPathForRoute(item.path, basePath)}
-                aria-current={activeNavId === item.id ? "page" : undefined}
-                className={activeNavId === item.id ? "active" : ""}
-                key={item.id}
-                onClick={(event) => {
-                  event.preventDefault();
-                  navigate(item.path);
-                }}
-              >
-                {item.label[locale]}
-              </a>
+            <a
+              href={browserPathForRoute(homeNav.path, basePath)}
+              aria-current={activeNavId === homeNav.id ? "page" : undefined}
+              className={activeNavId === homeNav.id ? "active" : ""}
+              onClick={(event) => {
+                event.preventDefault();
+                navigate(homeNav.path);
+              }}
+            >
+              {homeNav.label[locale]}
+            </a>
+            {navigationGroups.map((group) => (
+              <div className={`desktop-nav-group ${activeGroupId === group.id ? "active" : ""}`} key={group.id}>
+                <a
+                  className="desktop-nav-trigger"
+                  href={browserPathForRoute(group.landingPath, basePath)}
+                  aria-current={activeGroupId === group.id ? "page" : undefined}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    navigate(group.landingPath);
+                  }}
+                >
+                  {group.label[locale]}<CaretDown size={14} weight="bold" aria-hidden="true" />
+                </a>
+                <div className="desktop-nav-menu">
+                  <span>{group.description[locale]}</span>
+                  {group.itemIds.map((itemId) => {
+                    const item = navigation.find((entry) => entry.id === itemId);
+                    return (
+                      <a
+                        href={browserPathForRoute(item.path, basePath)}
+                        className={activeNavId === item.id ? "active" : ""}
+                        key={item.id}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          navigate(item.path);
+                        }}
+                      >
+                        {item.label[locale]}<ArrowRight size={15} aria-hidden="true" />
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
             ))}
+            <a
+              href={browserPathForRoute(aboutNav.path, basePath)}
+              aria-current={activeNavId === aboutNav.id ? "page" : undefined}
+              className={activeNavId === aboutNav.id ? "active" : ""}
+              onClick={(event) => {
+                event.preventDefault();
+                navigate(aboutNav.path);
+              }}
+            >
+              {aboutNav.label[locale]}
+            </a>
           </nav>
 
           <div className="header-actions">
@@ -151,21 +198,53 @@ export function App() {
         {menuOpen && (
           <nav className="mobile-nav" aria-label={locale === "zh" ? "移动端导航" : "Mobile navigation"}>
             <CampusSelector campusId={campusId} locale={locale} onChange={selectCampus} />
-            {navigation.map((item) => (
-              <a
-                href={browserPathForRoute(item.path, basePath)}
-                aria-current={activeNavId === item.id ? "page" : undefined}
-                className={activeNavId === item.id ? "active" : ""}
-                key={item.id}
-                onClick={(event) => {
-                  event.preventDefault();
-                  navigate(item.path);
-                }}
-              >
-                {item.label[locale]}
-                <ArrowRight size={18} />
-              </a>
+            <a
+              href={browserPathForRoute(homeNav.path, basePath)}
+              aria-current={activeNavId === homeNav.id ? "page" : undefined}
+              className={activeNavId === homeNav.id ? "active" : ""}
+              onClick={(event) => {
+                event.preventDefault();
+                navigate(homeNav.path);
+              }}
+            >
+              {homeNav.label[locale]}<ArrowRight size={18} aria-hidden="true" />
+            </a>
+            {navigationGroups.map((group) => (
+              <section className="mobile-nav-group" key={group.id}>
+                <header>
+                  <strong>{group.label[locale]}</strong>
+                  <span>{group.description[locale]}</span>
+                </header>
+                {group.itemIds.map((itemId) => {
+                  const item = navigation.find((entry) => entry.id === itemId);
+                  return (
+                    <a
+                      href={browserPathForRoute(item.path, basePath)}
+                      aria-current={activeNavId === item.id ? "page" : undefined}
+                      className={activeNavId === item.id ? "active" : ""}
+                      key={item.id}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        navigate(item.path);
+                      }}
+                    >
+                      {item.label[locale]}<ArrowRight size={18} aria-hidden="true" />
+                    </a>
+                  );
+                })}
+              </section>
             ))}
+            <a
+              href={browserPathForRoute(aboutNav.path, basePath)}
+              aria-current={activeNavId === aboutNav.id ? "page" : undefined}
+              className={activeNavId === aboutNav.id ? "active" : ""}
+              onClick={(event) => {
+                event.preventDefault();
+                navigate(aboutNav.path);
+              }}
+            >
+              {aboutNav.label[locale]}<ArrowRight size={18} aria-hidden="true" />
+            </a>
           </nav>
         )}
       </header>
@@ -174,15 +253,15 @@ export function App() {
         {mobileNavigation.map(({ id, path: itemPath, label, Icon }) => (
           <a
             href={browserPathForRoute(itemPath, basePath)}
-            aria-current={activeNavId === id ? "page" : undefined}
-            className={activeNavId === id ? "active" : ""}
+            aria-current={(id === "home" ? activeNavId === id : activeGroupId === id) ? "page" : undefined}
+            className={(id === "home" ? activeNavId === id : activeGroupId === id) ? "active" : ""}
             key={id}
             onClick={(event) => {
               event.preventDefault();
               navigate(itemPath);
             }}
           >
-            <Icon size={22} weight={activeNavId === id ? "fill" : "regular"} aria-hidden="true" />
+            <Icon size={22} weight={(id === "home" ? activeNavId === id : activeGroupId === id) ? "fill" : "regular"} aria-hidden="true" />
             <span>{label[locale]}</span>
           </a>
         ))}

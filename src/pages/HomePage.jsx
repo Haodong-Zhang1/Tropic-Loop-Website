@@ -7,8 +7,8 @@ import {
   campusLocations,
   campuses,
   copy,
+  jcuCourseAreas,
   staffDirectory,
-  studyPaths,
   weeklyItems,
 } from "../data/content.js";
 
@@ -22,14 +22,18 @@ export function HomePage({ locale, campusId, onCampusChange, onNavigate }) {
 
   const searchableItems = useMemo(
     () => [
-      ...studyPaths.flatMap((path) =>
-        path.courses.map((course) => ({
-          url: course.url,
-          title: `${course.code} · ${locale === "zh" ? course.zh : course.title}`,
-          detail: locale === "zh" ? course.title : course.zh,
-          keywords: `${course.code} ${course.title} ${course.zh}`,
-        })),
-      ),
+      ...jcuCourseAreas.map((course) => ({
+        route: "/study",
+        title: `${course.code} · ${course.title}`,
+        detail: course.summary[locale],
+        keywords: `${course.code} ${course.title} ${course.label.zh} ${course.label.en}`,
+      })),
+      {
+        route: "/study",
+        title: locale === "zh" ? "学术英语" : "Academic English",
+        detail: locale === "zh" ? "任务动词、论证、逻辑连接、审慎表达与 JCU 官方支持。" : "Assessment verbs, argument, logical links, hedging and official JCU support.",
+        keywords: "学术英语 academic English assessment writing vocabulary rubric 词表 写作",
+      },
       ...locations.map((location) => ({
         route: location.route,
         title: location.title[locale],

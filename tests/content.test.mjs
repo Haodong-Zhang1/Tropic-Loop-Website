@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   appRoutes,
+  academicEnglishModules,
+  academicEnglishResources,
+  academicVocabularyGroups,
   bankAccounts,
   buildingDirectory,
   campuses,
@@ -19,7 +22,9 @@ import {
   mobilePlans,
   mobilePrimaryNavigationIds,
   navigation,
+  navigationGroups,
   copy,
+  jcuCourseAreas,
   openLearningTopics,
   staffDirectory,
   studyPaths,
@@ -105,11 +110,42 @@ test("the primary navigation has one distinct path for each product area", () =>
   );
 });
 
-test("mobile navigation keeps the four highest-frequency destinations one tap away", () => {
-  assert.deepEqual(mobilePrimaryNavigationIds, ["home", "study", "life", "market"]);
-  for (const id of mobilePrimaryNavigationIds) {
-    assert.ok(navigation.some((item) => item.id === id));
+test("navigation groups the product around support, community and study needs", () => {
+  assert.deepEqual(navigationGroups.map((group) => group.id), ["academic", "support", "community"]);
+  assert.deepEqual(navigationGroups.find((group) => group.id === "support").itemIds, ["campus", "life"]);
+  assert.deepEqual(navigationGroups.find((group) => group.id === "community").itemIds, ["culture", "market"]);
+  assert.deepEqual(navigationGroups.find((group) => group.id === "academic").itemIds, ["study", "career"]);
+  for (const group of navigationGroups) {
+    assert.ok(group.itemIds.every((id) => navigation.some((item) => item.id === id)));
   }
+});
+
+test("mobile navigation keeps the homepage and three functional groups one tap away", () => {
+  assert.deepEqual(mobilePrimaryNavigationIds, ["home", "academic", "support", "community"]);
+  assert.ok(navigation.some((item) => item.id === "home"));
+  for (const id of mobilePrimaryNavigationIds.slice(1)) {
+    assert.ok(navigationGroups.some((group) => group.id === id));
+  }
+});
+
+test("the public study page data covers the requested JCU course areas", () => {
+  assert.deepEqual(jcuCourseAreas.map((course) => course.id), ["information-technology", "science", "technology-innovation"]);
+  assert.equal(jcuCourseAreas[0].statusTone, "verified");
+  assert.equal(jcuCourseAreas[1].statusTone, "verified");
+  assert.equal(jcuCourseAreas[2].statusTone, "caution");
+  assert.match(jcuCourseAreas[2].title, /Technology and Innovation/);
+  for (const course of jcuCourseAreas) {
+    assert.ok(course.links.length >= 3);
+    for (const link of course.links) assert.match(link.url, /^https:\/\//);
+  }
+});
+
+test("Academic English is a substantial study pathway with vocabulary and official support", () => {
+  assert.deepEqual(academicEnglishModules.map((module) => module.id), ["unpack", "argument", "style", "revise"]);
+  assert.ok(academicVocabularyGroups.length >= 5);
+  assert.ok(academicVocabularyGroups.every((group) => group.words.length >= 6));
+  assert.ok(academicVocabularyGroups.some((group) => group.words.some((word) => word.term === "critically appraise")));
+  for (const resource of academicEnglishResources) assert.match(resource.url, /^https:\/\/www\.jcu\.edu\.au\//);
 });
 
 test("Chinese page labels are concise Chinese-first navigation cues", () => {

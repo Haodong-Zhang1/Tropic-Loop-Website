@@ -133,14 +133,16 @@ textarea:focus-visible {
   gap: clamp(14px, 1.6vw, 24px);
 }
 
-.desktop-nav a,
+.desktop-nav > a,
+.desktop-nav-trigger,
 .language-switch button {
   border: 0;
   background: transparent;
   cursor: pointer;
 }
 
-.desktop-nav a {
+.desktop-nav > a,
+.desktop-nav-trigger {
   padding: 25px 0 21px;
   font-size: 15.5px;
   font-weight: 600;
@@ -148,10 +150,71 @@ textarea:focus-visible {
   transition: color 160ms ease, border-color 160ms ease;
 }
 
-.desktop-nav a:hover,
-.desktop-nav a.active {
+.desktop-nav > a:hover,
+.desktop-nav > a.active,
+.desktop-nav-group:hover .desktop-nav-trigger,
+.desktop-nav-group:focus-within .desktop-nav-trigger,
+.desktop-nav-group.active .desktop-nav-trigger {
   color: var(--green);
   border-color: var(--lime);
+}
+
+.desktop-nav-group {
+  position: relative;
+}
+
+.desktop-nav-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.desktop-nav-menu {
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 50%;
+  z-index: 30;
+  width: 230px;
+  display: grid;
+  padding: 14px;
+  border: 1px solid #dfe2db;
+  border-radius: 16px;
+  background: rgba(255, 255, 253, 0.98);
+  box-shadow: 0 18px 42px rgba(18, 38, 31, 0.13);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 8px);
+  transition: opacity 150ms ease, transform 150ms ease, visibility 150ms ease;
+}
+
+.desktop-nav-group:hover .desktop-nav-menu,
+.desktop-nav-group:focus-within .desktop-nav-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.desktop-nav-menu > span {
+  padding: 4px 8px 10px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.desktop-nav-menu a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.desktop-nav-menu a:hover,
+.desktop-nav-menu a.active {
+  background: #edf1e8;
+  color: var(--green);
 }
 
 .header-actions {
@@ -901,10 +964,11 @@ textarea:focus-visible {
 .study-mode-switch,
 .joint-mode-switch {
   display: inline-flex;
-  padding: 4px;
-  border: 1px solid #d5d8d1;
+  padding: 6px;
+  border: 2px solid #d1d7ce;
   border-radius: 999px;
   background: #efefe9;
+  box-shadow: 0 12px 30px rgba(18, 38, 31, 0.08);
 }
 
 .study-mode-switch button,
@@ -913,12 +977,14 @@ textarea:focus-visible {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px 16px;
+  min-height: 52px;
+  padding: 13px 24px;
   border: 0;
   border-radius: 999px;
   background: transparent;
   color: #4f5652;
-  font-size: 12.5px;
+  font-size: 14.5px;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -926,7 +992,12 @@ textarea:focus-visible {
 .joint-mode-switch button.active {
   background: var(--green);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 77, 61, 0.16);
+  box-shadow: 0 7px 18px rgba(0, 77, 61, 0.24);
+}
+
+.study-mode-switch button:first-child {
+  min-width: 158px;
+  font-weight: 750;
 }
 
 .study-mode-panel {
@@ -960,6 +1031,498 @@ textarea:focus-visible {
 .study-integrity {
   padding-top: 18px;
   border-top: 1px solid var(--line);
+}
+
+.degree-guide-intro,
+.academic-english-lead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 44px;
+}
+
+.degree-guide-intro > div:first-child,
+.academic-english-lead > div:first-child {
+  max-width: 720px;
+}
+
+.degree-guide-intro h2,
+.academic-english-lead h2 {
+  margin: 0;
+  font-size: 27px;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.degree-guide-intro p,
+.academic-english-lead p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.study-primary-link {
+  min-width: 300px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 1px solid #c9d5c7;
+  border-radius: 15px;
+  background: #edf2e9;
+  color: var(--green);
+}
+
+.study-primary-link span {
+  display: grid;
+  gap: 3px;
+}
+
+.study-primary-link strong {
+  font-size: 13px;
+}
+
+.study-primary-link small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.degree-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.degree-tabs button {
+  min-height: 142px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 7px;
+  padding: 20px;
+  border: 1px solid #d8dcd5;
+  border-radius: 17px;
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.degree-tabs button:hover {
+  transform: translateY(-2px);
+  border-color: #aebcaf;
+}
+
+.degree-tabs button.active {
+  border-color: var(--green);
+  background: #eaf0e7;
+}
+
+.degree-tabs button > span {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.7px;
+}
+
+.degree-tabs button > strong {
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.degree-tabs button > small {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.degree-detail {
+  margin-top: 14px;
+  overflow: hidden;
+  border: 1px solid #d5dad2;
+  border-radius: 22px;
+  background: var(--surface);
+}
+
+.degree-detail.caution {
+  border-color: #dccb99;
+}
+
+.degree-detail > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 30px 32px 24px;
+}
+
+.degree-detail > header > div {
+  max-width: 800px;
+}
+
+.degree-code {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.75px;
+}
+
+.degree-detail h3 {
+  margin: 8px 0 10px;
+  font-size: 29px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+}
+
+.degree-detail header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.course-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  padding: 8px 11px;
+  border-radius: 999px;
+  background: #e4efe4;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.course-status.caution {
+  background: #f6edd5;
+  color: #73530d;
+}
+
+.degree-facts {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr 0.8fr;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: #f5f5f0;
+}
+
+.degree-facts > div {
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 7px;
+  padding: 20px 28px;
+  border-right: 1px solid var(--line);
+}
+
+.degree-facts > div:last-child {
+  border-right: 0;
+}
+
+.degree-facts span,
+.degree-detail-body section > span,
+.degree-detail-body aside > span {
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.55px;
+  text-transform: uppercase;
+}
+
+.degree-facts strong {
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.degree-detail-body {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 0;
+}
+
+.degree-detail-body > section,
+.degree-detail-body > aside {
+  padding: 28px 32px 30px;
+}
+
+.degree-detail-body > aside {
+  border-left: 1px solid var(--line);
+  background: #fbfbf8;
+}
+
+.degree-detail-body ul {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 24px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.degree-detail-body li {
+  position: relative;
+  padding-left: 17px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.degree-detail-body li::before {
+  position: absolute;
+  top: 0.6em;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  content: "";
+}
+
+.degree-detail-body aside > div {
+  display: grid;
+  gap: 8px;
+  margin-top: 13px;
+}
+
+.degree-detail-body aside a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 43px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: #edf1e8;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.academic-loop {
+  width: 330px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 5px 12px;
+  padding: 18px 20px;
+  border: 1px solid #b9d0c5;
+  border-radius: 17px;
+  background: #e6f0eb;
+  color: var(--green);
+}
+
+.academic-loop svg {
+  grid-row: span 2;
+}
+
+.academic-loop strong {
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.academic-loop span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.academic-workflow,
+.vocabulary-lab,
+.academic-resources {
+  padding-top: 44px;
+}
+
+.academic-section-heading > span {
+  color: var(--green);
+  font-size: 10.5px;
+  font-weight: 750;
+  letter-spacing: 0.65px;
+  text-transform: uppercase;
+}
+
+.academic-section-heading h3 {
+  margin: 5px 0 0;
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+
+.academic-module-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.academic-module-grid article {
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  border: 1px solid #d8dcd5;
+  border-radius: 18px;
+  background: var(--surface);
+}
+
+.academic-module-grid article > span {
+  color: #89a255;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.academic-module-grid h4 {
+  margin: 24px 0 9px;
+  font-size: 19px;
+}
+
+.academic-module-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.65;
+}
+
+.academic-module-grid strong {
+  margin-top: auto;
+  padding-top: 18px;
+  color: var(--green);
+  font-size: 11.5px;
+  line-height: 1.55;
+}
+
+.vocabulary-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.vocabulary-tabs {
+  display: grid;
+  gap: 7px;
+}
+
+.vocabulary-tabs button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 3px 10px;
+  min-height: 66px;
+  padding: 12px 14px;
+  border: 1px solid #d8dcd5;
+  border-radius: 13px;
+  background: var(--surface);
+  text-align: left;
+  cursor: pointer;
+}
+
+.vocabulary-tabs button.active {
+  border-color: var(--green);
+  background: #eaf0e7;
+  color: var(--green);
+}
+
+.vocabulary-tabs button strong {
+  font-size: 13px;
+}
+
+.vocabulary-tabs button span {
+  color: var(--muted);
+  font-size: 10.5px;
+}
+
+.vocabulary-tabs button svg {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+}
+
+.vocabulary-sheet {
+  padding: 26px 28px;
+  border: 1px solid #d3dad1;
+  border-radius: 18px;
+  background: #f1f4ed;
+}
+
+.vocabulary-sheet header > span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.vocabulary-sheet h4 {
+  margin: 5px 0 18px;
+  font-size: 22px;
+}
+
+.vocabulary-sheet dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+  margin: 0;
+}
+
+.vocabulary-sheet dl > div {
+  display: grid;
+  grid-template-columns: minmax(115px, 0.7fr) 1.3fr;
+  gap: 14px;
+  padding: 13px 0;
+  border-top: 1px solid #d8ded4;
+}
+
+.vocabulary-sheet dt {
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.vocabulary-sheet dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.academic-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.academic-resource-grid > a {
+  min-height: 160px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid #d8dcd5;
+  border-radius: 17px;
+  background: var(--surface);
+  transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.academic-resource-grid > a:hover {
+  transform: translateY(-2px);
+  border-color: #9eaea1;
+}
+
+.academic-resource-grid > a > svg:first-child {
+  color: var(--green);
+}
+
+.academic-resource-grid h4 {
+  margin: 1px 0 8px;
+  font-size: 15px;
+}
+
+.academic-resource-grid p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11.5px;
+  line-height: 1.6;
 }
 
 .open-resource-panel {
@@ -3662,6 +4225,34 @@ footer div {
     font-weight: 700;
   }
 
+  .mobile-nav-group {
+    display: grid;
+    padding: 12px 0 6px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mobile-nav-group header {
+    display: grid;
+    gap: 2px;
+    padding: 4px 0 5px;
+  }
+
+  .mobile-nav-group header strong {
+    color: var(--green);
+    font-size: 13px;
+  }
+
+  .mobile-nav-group header span {
+    color: var(--muted);
+    font-size: 10.5px;
+  }
+
+  .mobile-nav-group a {
+    min-height: 44px;
+    padding-left: 14px;
+    border-bottom: 0;
+  }
+
   .mobile-bottom-nav {
     position: fixed;
     right: 0;
@@ -3942,6 +4533,72 @@ footer div {
     gap: 18px;
   }
 
+  .degree-guide-intro,
+  .academic-english-lead {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .study-primary-link,
+  .academic-loop {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .degree-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .degree-tabs button {
+    min-height: 112px;
+  }
+
+  .degree-detail > header {
+    flex-direction: column;
+    padding: 25px 22px 21px;
+  }
+
+  .degree-facts,
+  .degree-detail-body,
+  .vocabulary-layout,
+  .academic-resource-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .degree-facts > div {
+    min-height: 82px;
+    padding: 17px 22px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .degree-facts > div:last-child {
+    border-bottom: 0;
+  }
+
+  .degree-detail-body > section,
+  .degree-detail-body > aside {
+    padding: 24px 22px;
+  }
+
+  .degree-detail-body > aside {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+
+  .academic-module-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .vocabulary-sheet dl {
+    grid-template-columns: 1fr;
+  }
+
+  .academic-resource-grid > a {
+    min-height: 0;
+  }
+
   .open-resource-intro,
   .resource-topic > header,
   .culture-events-heading {
@@ -4210,6 +4867,38 @@ footer div {
 
   .service-grid {
     grid-template-columns: 1fr;
+  }
+
+  .degree-guide-intro h2,
+  .academic-english-lead h2 {
+    font-size: 23px;
+  }
+
+  .degree-detail h3 {
+    font-size: 24px;
+  }
+
+  .course-status {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .degree-detail-body ul,
+  .academic-module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .academic-module-grid article {
+    min-height: 220px;
+  }
+
+  .vocabulary-sheet {
+    padding: 22px 18px;
+  }
+
+  .vocabulary-sheet dl > div {
+    grid-template-columns: minmax(100px, 0.7fr) 1.3fr;
+    gap: 10px;
   }
 
   .form-footer {
