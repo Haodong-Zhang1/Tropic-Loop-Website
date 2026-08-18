@@ -546,6 +546,136 @@ textarea:focus-visible {
   font-weight: 650;
 }
 
+.campus-news-section {
+  max-width: 1536px;
+  margin: 0 auto;
+  padding: 42px 64px 12px;
+}
+
+.campus-news-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.campus-news-heading .eyebrow {
+  margin: 0 0 9px;
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.campus-news-heading h2 {
+  margin: 0;
+  font-size: clamp(25px, 2.25vw, 34px);
+  font-weight: 580;
+  letter-spacing: -0.8px;
+}
+
+.campus-news-heading > div > p:last-child {
+  max-width: 680px;
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.campus-news-heading > a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 1px solid #ced4cc;
+  border-radius: 999px;
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.campus-news-heading > a:hover {
+  border-color: var(--green);
+  background: #eef3ea;
+}
+
+.campus-news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.campus-news-card {
+  min-height: 255px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid #d9ddd6;
+  border-radius: 18px;
+  background: #fff;
+  color: inherit;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.campus-news-card:hover {
+  border-color: #aebdaf;
+  box-shadow: 0 14px 34px rgba(11, 74, 57, 0.08);
+  transform: translateY(-2px);
+}
+
+.campus-news-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: #66706a;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.campus-news-meta span {
+  padding: 6px 9px;
+  border-radius: 999px;
+  background: #eaf1e5;
+  color: var(--green);
+}
+
+.campus-news-card h3 {
+  margin: 20px 0 10px;
+  font-size: 19px;
+  font-weight: 620;
+  line-height: 1.32;
+  letter-spacing: -0.25px;
+}
+
+.campus-news-card > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.62;
+}
+
+.campus-news-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: auto;
+  padding-top: 24px;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.campus-news-updated {
+  margin: 13px 2px 0;
+  color: #7a807c;
+  font-size: 11px;
+}
+
 .campus-section,
 .study-section,
 .page-section,
@@ -3976,6 +4106,7 @@ footer div {
   .header-inner,
   .hero-content,
   .weekly-strip,
+  .campus-news-section,
   .campus-section,
   .study-section,
   .page-section,
@@ -4019,6 +4150,11 @@ footer div {
 
   .weekly-strip {
     grid-template-columns: 150px 1fr;
+  }
+
+  .campus-news-section {
+    padding-left: 36px;
+    padding-right: 36px;
   }
 
   .weekly-items a {
@@ -4360,6 +4496,41 @@ footer div {
     flex: 0 0 290px;
     min-height: 66px;
     padding: 0 18px 0 0;
+  }
+
+  .campus-news-section {
+    padding: 34px 22px 6px;
+  }
+
+  .campus-news-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .campus-news-heading h2 {
+    font-size: 27px;
+  }
+
+  .campus-news-heading > a {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+
+  .campus-news-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .campus-news-card {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .campus-news-card h3 {
+    margin-top: 16px;
+    font-size: 18px;
   }
 
   .campus-section,

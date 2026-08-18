@@ -7,6 +7,7 @@ import {
   academicVocabularyGroups,
   bankAccounts,
   buildingDirectory,
+  campusNews,
   campuses,
   careerResources,
   communityRules,
@@ -217,6 +218,18 @@ test("every staff entry opens an official JCU page", () => {
 test("every weekly item links to a known page", () => {
   const paths = new Set(appRoutes.map((item) => item.path));
   for (const item of weeklyItems) assert.ok(paths.has(item.route));
+});
+
+test("campus news is recent, campus-filterable and links only to official JCU pages", () => {
+  assert.ok(campusNews.some((item) => item.campus === "both"));
+  for (const campus of ["cairns", "townsville"]) {
+    assert.ok(campusNews.filter((item) => item.campus === campus).length >= 2);
+  }
+  for (const item of campusNews) {
+    assert.match(item.date, /^2026-\d{2}-\d{2}$/);
+    assert.match(item.url, /^https:\/\/www\.jcu\.edu\.au\//);
+    assert.ok(item.title.zh && item.title.en && item.summary.zh && item.summary.en);
+  }
 });
 
 test("every life service opens a real route or campus-specific public link", () => {

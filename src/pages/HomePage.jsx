@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
-import { ArrowRight, MagnifyingGlass } from "@phosphor-icons/react";
+import { ArrowRight, ArrowSquareOut, MagnifyingGlass } from "@phosphor-icons/react";
 import { CampusSelector } from "../components/CampusSelector.jsx";
 import { LocationCard } from "../components/LocationCard.jsx";
 import {
   buildingDirectory,
   campusLocations,
+  campusNews,
   campuses,
   copy,
   jcuCourseAreas,
@@ -19,6 +20,9 @@ export function HomePage({ locale, campusId, onCampusChange, onNavigate }) {
   const home = text.home;
   const campus = campuses[campusId];
   const locations = campusLocations[campusId];
+  const visibleNews = campusNews
+    .filter((item) => item.campus === "both" || item.campus === campusId)
+    .slice(0, 3);
 
   const searchableItems = useMemo(
     () => [
@@ -152,6 +156,39 @@ export function HomePage({ locale, campusId, onCampusChange, onNavigate }) {
             </a>
           ))}
         </div>
+      </section>
+
+      <section className="campus-news-section" aria-labelledby="campus-news-heading">
+        <div className="campus-news-heading">
+          <div>
+            <p className="eyebrow">{home.newsEyebrow}</p>
+            <h2 id="campus-news-heading">{campus.name[locale]} · {home.newsTitle}</h2>
+            <p>{home.newsIntro}</p>
+          </div>
+          <a href="https://www.jcu.edu.au/news" target="_blank" rel="noreferrer">
+            {home.allNews}
+            <ArrowSquareOut size={18} aria-hidden="true" />
+          </a>
+        </div>
+
+        <div className="campus-news-grid">
+          {visibleNews.map((item) => (
+            <a className="campus-news-card" href={item.url} target="_blank" rel="noreferrer" key={item.id}>
+              <div className="campus-news-meta">
+                <span>{item.category[locale]}</span>
+                <time dateTime={item.date}>{item.dateLabel[locale]}</time>
+              </div>
+              <h3>{item.title[locale]}</h3>
+              <p>{item.summary[locale]}</p>
+              <span className="campus-news-source">
+                JCU
+                <ArrowSquareOut size={17} aria-hidden="true" />
+              </span>
+            </a>
+          ))}
+        </div>
+
+        <p className="campus-news-updated">{home.newsUpdated}</p>
       </section>
 
       <section className="campus-section home-explore" aria-labelledby="explore-heading">
