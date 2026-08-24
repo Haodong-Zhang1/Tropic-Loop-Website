@@ -222,8 +222,15 @@ test("every weekly item links to a known page", () => {
 
 test("campus news is recent, campus-filterable and links only to official JCU pages", () => {
   assert.ok(campusNews.some((item) => item.campus === "both"));
+  assert.deepEqual(
+    campusNews.map((item) => item.date),
+    [...campusNews].map((item) => item.date).sort().reverse(),
+  );
   for (const campus of ["cairns", "townsville"]) {
-    assert.ok(campusNews.filter((item) => item.campus === campus).length >= 2);
+    const visibleNews = campusNews
+      .filter((item) => item.campus === "both" || item.campus === campus)
+      .slice(0, 3);
+    assert.equal(visibleNews.length, 3);
   }
   for (const item of campusNews) {
     assert.match(item.date, /^2026-\d{2}-\d{2}$/);
