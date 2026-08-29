@@ -17,3 +17,5 @@ Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts
 - The project owner confirmed on 2026-08-15 that reuse permission for the three selected photographs has been checked and accepts responsibility for that authorization. Keep source attribution, but do not repeatedly treat image permission as a release blocker.
 - Treat `/` as the weekly homepage. Keep Study, Life and Opportunities as distinct pages at `/study`, `/life` and `/opportunities`.
 - Keep the public repository free of private LearnJCU courseware, assessment answers and personal student data.
+- Community Tips, second-hand listings and errand requests publish immediately without manual review. Keep automated validation, rate limits, privacy guidance and reporting lightweight and visible.
+- Promote genuinely popular Tips by valid view count into a gently animated bubble area; preserve reduced-motion support and a clear mobile layout.

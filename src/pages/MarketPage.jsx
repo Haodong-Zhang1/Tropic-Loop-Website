@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowRight,
   CheckCircle,
+  Flag,
   HandCoins,
   ImageSquare,
   MapPin,
@@ -16,9 +17,15 @@ import { PageIntro } from "../components/PageIntro.jsx";
 import {
   campuses,
   communityRules,
-  communitySeedPosts,
   copy,
 } from "../data/content.js";
+import {
+  claimCommunityPost,
+  communityErrorMessage,
+  createCommunityPost,
+  listCommunityPosts,
+  reportCommunityItem,
+} from "../lib/communityApi.js";
 
 const emptyForm = {
   title: "",
@@ -26,26 +33,21 @@ const emptyForm = {
   category: "Study item",
   store: "",
   amount: "",
+  contact: "",
   image: "",
 };
 
 const localize = (value, locale) => typeof value === "string" ? value : value?.[locale] ?? "";
 
-const loadPosts = () => {
-  try {
-    const saved = window.localStorage.getItem(communityRules.storageKey);
-    return saved ? JSON.parse(saved) : communitySeedPosts;
-  } catch {
-    return communitySeedPosts;
-  }
-};
-
 export function MarketPage({ locale, campusId }) {
   const [mode, setMode] = useState("secondhand");
   const [formOpen, setFormOpen] = useState(false);
   const [form, setForm] = useState(emptyForm);
-  const [posts, setPosts] = useState(loadPosts);
+  const [posts, setPosts] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [syncMode, setSyncMode] = useState("loading");
   const text = copy[locale];
   const page = text.market;
   const campus = campuses[campusId];
@@ -55,10 +57,17 @@ export function MarketPage({ locale, campusId }) {
     [campusId, mode, posts],
   );
 
-  const savePosts = (nextPosts) => {
-    setPosts(nextPosts);
-    window.localStorage.setItem(communityRules.storageKey, JSON.stringify(nextPosts));
-  };
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    listCommunityPosts(campusId, mode).then((result) => {
+      if (!active) return;
+      setPosts(result.items);
+      setSyncMode(result.mode);
+      setLoading(false);
+    });
+    return () => { active = false; };
+  }, [campusId, mode]);
 
   const updateField = (field, value) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -68,8 +77,8 @@ export function MarketPage({ locale, campusId }) {
   const handleImage = (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setMessage(locale === "zh" ? "请选择图片文件。" : "Please choose an image file.");
+    if (!new Set(["image/jpeg", "image/png", "image/webp"]).has(file.type)) {
+      setMessage(locale === "zh" ? "请选择 JPEG、PNG 或 WebP 图片。" : "Please choose a JPEG, PNG or WebP image.");
       return;
     }
     if (file.size > communityRules.maxImageBytes) {
@@ -81,7 +90,7 @@ export function MarketPage({ locale, campusId }) {
     reader.readAsDataURL(file);
   };
 
-  const submitPost = (event) => {
+  const submitPost = async (event) => {
     event.preventDefault();
     const amount = Number(form.amount);
     const minimum = mode === "errand" ? communityRules.minCommissionAud : 0;
@@ -93,30 +102,53 @@ export function MarketPage({ locale, campusId }) {
       );
       return;
     }
-    const nextPost = {
-      id: `local-${Date.now()}`,
-      type: mode,
-      campus: campusId,
-      title: form.title.trim(),
-      description: form.description.trim(),
-      ...(mode === "secondhand"
-        ? { category: form.category, price: amount }
-        : { store: form.store.trim() || campus.name[locale], commission: amount }),
-      image: form.image,
-      sample: false,
-      status: "open",
-      createdAt: new Date().toISOString(),
-    };
-    savePosts([nextPost, ...posts]);
-    setForm(emptyForm);
-    setFormOpen(false);
-    setMessage(locale === "zh" ? "已保存到这台设备的社区板。" : "Saved to the community board on this device.");
+    setSubmitting(true);
+    try {
+      const result = await createCommunityPost({
+        type: mode,
+        campus: campusId,
+        title: form.title.trim(),
+        description: form.description.trim(),
+        category: form.category,
+        store: form.store.trim() || campus.name[locale],
+        amount,
+        contact: form.contact.trim(),
+        image: form.image,
+      });
+      setPosts((items) => [result.item, ...items]);
+      setSyncMode(result.mode);
+      setForm(emptyForm);
+      setFormOpen(false);
+      setMessage(
+        result.mode === "shared"
+          ? (locale === "zh" ? "发布成功，其他同学现在就能看到。" : "Published — other students can see it now.")
+          : (locale === "zh" ? "已立即显示；当前预览只保存在这台设备。" : "Shown instantly; this preview is stored on this device."),
+      );
+    } catch (error) {
+      setMessage(communityErrorMessage(error, locale));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const claimErrand = (postId) => {
-    const nextPosts = posts.map((post) => post.id === postId ? { ...post, status: "claimed" } : post);
-    savePosts(nextPosts);
-    setMessage(locale === "zh" ? "已在这台设备上标记为有人顺手带。" : "Marked as claimed on this device.");
+  const claimErrand = async (postId) => {
+    try {
+      const result = await claimCommunityPost(postId);
+      setPosts((items) => items.map((post) => post.id === postId ? { ...post, status: "claimed" } : post));
+      setSyncMode(result.mode);
+      setMessage(locale === "zh" ? "已标记为有人顺手带。" : "Marked as claimed.");
+    } catch (error) {
+      setMessage(communityErrorMessage(error, locale));
+    }
+  };
+
+  const reportPost = async (postId) => {
+    try {
+      await reportCommunityItem("post", postId);
+      setMessage(locale === "zh" ? "已收到举报，谢谢你帮助维护社区。" : "Report received. Thanks for helping keep the community useful.");
+    } catch (error) {
+      setMessage(communityErrorMessage(error, locale));
+    }
   };
 
   return (
@@ -156,8 +188,10 @@ export function MarketPage({ locale, campusId }) {
         <div className="local-demo-note">
           <ShieldCheck size={20} />
           <p>
-            <strong>{locale === "zh" ? "当前为试用版" : "Current pilot"}</strong>
-            <span>{locale === "zh" ? "帖子只保存在这台设备；跨设备公开发布将在接入账号、数据库和审核后开放。" : "Posts stay on this device. Cross-device publishing will open after accounts, storage and moderation are added."}</span>
+            <strong>{syncMode === "shared" ? (locale === "zh" ? "提交后立即公开" : "Published immediately") : (locale === "zh" ? "本地预览模式" : "Local preview mode")}</strong>
+            <span>{syncMode === "shared"
+              ? (locale === "zh" ? "无需人工审核；发布后会直接显示，异常内容可由社区举报。" : "No manual review: posts appear immediately and problematic content can be reported.")
+              : (locale === "zh" ? "当前预览会立即显示，但只保存在这台设备；共享服务上线后自动切换为跨设备公开。" : "Preview posts appear immediately but stay on this device. The shared service will switch on when published.")}</span>
           </p>
         </div>
 
@@ -174,6 +208,10 @@ export function MarketPage({ locale, campusId }) {
               <label className="field-span-2">
                 <span>{locale === "zh" ? "标题" : "Title"}</span>
                 <input required maxLength="70" value={form.title} onChange={(event) => updateField("title", event.target.value)} placeholder={mode === "secondhand" ? (locale === "zh" ? "例如：九成新电饭煲" : "e.g. Rice cooker in good condition") : (locale === "zh" ? "例如：顺路带一袋面包" : "e.g. Bring one loaf of bread")} />
+              </label>
+              <label className="field-span-2">
+                <span>{locale === "zh" ? "联系或交接方式（可选，会公开显示）" : "Contact or handover method (optional, shown publicly)"}</span>
+                <input maxLength="80" value={form.contact} onChange={(event) => updateField("contact", event.target.value)} placeholder={locale === "zh" ? "例如：站内约定后在图书馆门口交接" : "e.g. Arrange pickup outside the library"} />
               </label>
               {mode === "secondhand" ? (
                 <label>
@@ -202,14 +240,14 @@ export function MarketPage({ locale, campusId }) {
               {mode === "secondhand" && (
                 <label className="image-upload field-span-2">
                   <span>{locale === "zh" ? "上传一张图片（可选，≤ 1.2 MB）" : "Upload one image (optional, ≤ 1.2 MB)"}</span>
-                  <input type="file" accept="image/*" onChange={handleImage} />
+                  <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleImage} />
                   <span className="upload-control"><UploadSimple size={18} />{form.image ? (locale === "zh" ? "图片已选择" : "Image selected") : (locale === "zh" ? "选择图片" : "Choose image")}</span>
                 </label>
               )}
             </div>
             <div className="form-footer">
               <p>{locale === "zh" ? "请勿发布违禁品、药品、烟酒或需要专业资质的服务。平台不代收款。" : "Do not list prohibited goods, medicines, alcohol, tobacco or regulated services. The platform does not hold payments."}</p>
-              <button className="primary-action" type="submit">{locale === "zh" ? "确认发布" : "Publish post"}<ArrowRight size={18} /></button>
+              <button className="primary-action" type="submit" disabled={submitting}>{submitting ? (locale === "zh" ? "正在发布…" : "Publishing…") : (locale === "zh" ? "立即发布" : "Publish now")}<ArrowRight size={18} /></button>
             </div>
           </form>
         )}
@@ -217,7 +255,13 @@ export function MarketPage({ locale, campusId }) {
         <p className="community-message" aria-live="polite">{message}</p>
 
         <div className="community-grid" role="tabpanel">
-          {visiblePosts.length === 0 && (
+          {loading && (
+            <div className="empty-community community-loading" aria-live="polite">
+              <span className="loading-pulse" />
+              <h3>{locale === "zh" ? "正在读取社区内容" : "Loading community posts"}</h3>
+            </div>
+          )}
+          {!loading && visiblePosts.length === 0 && (
             <div className="empty-community">
               <ImageSquare size={30} />
               <h3>{locale === "zh" ? "这个校区暂时没有帖子" : "No posts for this campus yet"}</h3>
@@ -238,13 +282,16 @@ export function MarketPage({ locale, campusId }) {
                 <h3>{localize(post.title, locale)}</h3>
                 <p>{localize(post.description, locale)}</p>
                 <div className="community-card-footer">
-                  <span>{post.type === "secondhand" ? localize(post.category, locale) : post.store}</span>
-                  {post.type === "errand" && (
-                    <button type="button" disabled={post.status === "claimed"} onClick={() => claimErrand(post.id)}>
-                      {post.status === "claimed" ? <CheckCircle size={17} /> : <HandCoins size={17} />}
-                      {post.status === "claimed" ? (locale === "zh" ? "已有人顺手带" : "Claimed") : (locale === "zh" ? "我可以顺手带" : "I can bring it")}
-                    </button>
-                  )}
+                  <span>{post.contact || (post.type === "secondhand" ? localize(post.category, locale) : post.store)}</span>
+                  <div>
+                    <button className="report-button" type="button" onClick={() => reportPost(post.id)}><Flag size={15} />{locale === "zh" ? "举报" : "Report"}</button>
+                    {post.type === "errand" && (
+                      <button type="button" disabled={post.status === "claimed"} onClick={() => claimErrand(post.id)}>
+                        {post.status === "claimed" ? <CheckCircle size={17} /> : <HandCoins size={17} />}
+                        {post.status === "claimed" ? (locale === "zh" ? "已有人顺手带" : "Claimed") : (locale === "zh" ? "我可以顺手带" : "I can bring it")}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </article>

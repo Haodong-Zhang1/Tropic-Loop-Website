@@ -3057,6 +3057,12 @@ textarea:focus-visible {
   background: #003e31;
 }
 
+.primary-action:disabled,
+.culture-tip-form button:disabled {
+  opacity: 0.62;
+  cursor: wait;
+}
+
 .local-demo-note {
   display: grid;
   grid-template-columns: 24px 1fr;
@@ -3321,8 +3327,18 @@ textarea:focus-visible {
 }
 
 .community-card-footer > span {
+  min-width: 0;
+  overflow: hidden;
   color: #6d746f;
   font-size: 10.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.community-card-footer > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 }
 
 .community-card-footer button {
@@ -3346,6 +3362,19 @@ textarea:focus-visible {
   cursor: default;
 }
 
+.community-card-footer .report-button,
+.tip-report-button {
+  border-color: transparent;
+  background: transparent;
+  color: #737b76;
+  font-weight: 600;
+}
+
+.community-card-footer .report-button:hover,
+.tip-report-button:hover {
+  color: #9b2c2c;
+}
+
 .empty-community {
   grid-column: 1 / -1;
   display: grid;
@@ -3359,6 +3388,23 @@ textarea:focus-visible {
 .empty-community h3,
 .empty-community p {
   margin: 0;
+}
+
+.community-loading {
+  min-height: 240px;
+}
+
+.loading-pulse {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #dce7d6;
+  animation: loadingPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+  0%, 100% { opacity: 0.45; transform: scale(0.86); }
+  50% { opacity: 1; transform: scale(1); }
 }
 
 .empty-community p {
@@ -3929,12 +3975,186 @@ textarea:focus-visible {
   margin-top: 28px;
 }
 
+.tip-bubble-stage {
+  position: relative;
+  min-height: 150px;
+  margin-top: 28px;
+  padding: 20px 22px;
+  overflow: hidden;
+  border: 1px solid #dce3d8;
+  border-radius: 24px;
+  background: #edf3e9;
+}
+
+.tip-bubble-heading {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tip-bubble-heading > span,
+.tip-bubble-heading > small {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.tip-bubble-heading > span {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 760;
+  letter-spacing: 0.45px;
+  text-transform: uppercase;
+}
+
+.tip-bubble-heading > small {
+  color: #6b766f;
+  font-size: 10.5px;
+}
+
+.tip-bubble-empty {
+  max-width: 540px;
+  margin: 34px auto 10px;
+  color: #67716b;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.tip-bubble-field {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: 18px;
+  margin: 18px auto 0;
+  max-width: 920px;
+}
+
+.popular-tip-bubble {
+  aspect-ratio: 1.9 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 24px;
+  border: 1px solid rgba(0, 78, 62, 0.14);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--green);
+  box-shadow: 0 18px 40px rgba(18, 38, 31, 0.08);
+  cursor: pointer;
+  animation:
+    tipBubbleIn 580ms cubic-bezier(0.18, 0.8, 0.25, 1.15) both,
+    tipBubbleFloat 4.8s ease-in-out calc(620ms + var(--bubble-index) * 140ms) infinite;
+  animation-delay: calc(var(--bubble-index) * 140ms), calc(620ms + var(--bubble-index) * 140ms);
+}
+
+.popular-tip-bubble:nth-child(2) {
+  transform-origin: center bottom;
+}
+
+.popular-tip-bubble strong {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 620;
+  line-height: 1.55;
+  text-align: center;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.popular-tip-bubble span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #6c766f;
+  font-size: 10px;
+}
+
+.popular-tip-bubble:hover {
+  border-color: rgba(0, 78, 62, 0.34);
+  box-shadow: 0 22px 48px rgba(18, 38, 31, 0.12);
+}
+
+@keyframes tipBubbleIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.84); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes tipBubbleFloat {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -8px; }
+}
+
 .student-tip-grid article {
   min-height: 230px;
   padding: 20px;
   border-top: 3px solid var(--lime);
   background: #fff;
   box-shadow: 0 10px 24px rgba(18, 38, 31, 0.04);
+}
+
+.student-tip-grid .community-tip-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border-top-color: var(--green);
+}
+
+.tip-open-button {
+  flex: 1;
+  width: 100%;
+  padding: 20px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.tip-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--green);
+}
+
+.tip-card-meta > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 720;
+}
+
+.community-tip-card .tip-open-button h3 {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.community-tip-card .tip-open-button p {
+  margin-top: 18px;
+}
+
+.tip-report-button {
+  width: max-content;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0 12px 12px auto;
+  padding: 7px 8px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .student-tip-grid article > div {
@@ -4060,6 +4280,41 @@ textarea:focus-visible {
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
+}
+
+.culture-form-success {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: #e7efe2;
+  color: var(--green);
+  font-size: 10.5px;
+  font-weight: 650;
+}
+
+.community-sync-state {
+  width: max-content;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: #e7efe2;
+  color: var(--green);
+  font-size: 9.5px;
+  font-weight: 720;
+}
+
+.community-sync-state.device,
+.community-sync-state.loading {
+  background: #ecece7;
+  color: #727873;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popular-tip-bubble,
+  .loading-pulse {
+    animation: none;
+  }
 }
 
 .culture-tip-form > p:last-child {
@@ -4570,6 +4825,39 @@ footer div {
     flex: 1;
     justify-content: center;
     min-height: 44px;
+  }
+
+  .tip-bubble-stage {
+    margin-top: 22px;
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .tip-bubble-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .tip-bubble-field {
+    display: flex;
+    gap: 12px;
+    max-width: none;
+    overflow-x: auto;
+    padding: 2px 2px 14px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .tip-bubble-field::-webkit-scrollbar {
+    display: none;
+  }
+
+  .popular-tip-bubble {
+    flex: 0 0 76%;
+    min-height: 138px;
+    aspect-ratio: auto;
+    scroll-snap-align: center;
   }
 
   .form-grid,
@@ -5084,6 +5372,16 @@ footer div {
   .community-card,
   .empty-community {
     min-height: 340px;
+  }
+
+  .community-card-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .community-card-footer > div {
+    width: 100%;
+    justify-content: flex-end;
   }
 
   .career-track-grid article,

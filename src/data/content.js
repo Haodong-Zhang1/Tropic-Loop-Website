@@ -445,7 +445,7 @@ export const copy = {
     culture: {
       eyebrow: "北昆士兰文化入门",
       title: "先理解这里，\n再真正融入这里。",
-      intro: "从澳洲日常、JCU 校园到北昆士兰节庆，了解新环境的表达方式、文化边界和参与入口。",
+      intro: "从澳洲日常、JCU 校园到北昆士兰节庆，先看实用经验，也把自己的 Tip 直接分享给社区。",
       layersTitle: "从三个层次认识新环境",
       eventsTitle: "北昆士兰年度文化日历",
       tipsTitle: "同学真正会用到的 Tips",
@@ -475,7 +475,7 @@ export const copy = {
     market: {
       eyebrow: "学生互助社区",
       title: "闲置流动起来，\n小事顺手解决。",
-      intro: "发布二手物品，或请同校区同学顺路带一件。先把需求、价格和交接方式说清楚。",
+      intro: "二手物品与顺手带需求提交后直接展示，按校区快速找到真实、清楚的同学互助信息。",
       sectionTitle: "社区发布板",
       secondhand: "二手物品",
       errand: "顺手带一件",
@@ -553,7 +553,7 @@ export const copy = {
     culture: {
       eyebrow: "UNDERSTAND THE PLACE YOU STUDY IN",
       title: "Understand the place.\nThen become part of it.",
-      intro: "Explore Australian everyday life, JCU campus culture and North Queensland events, with practical ways to participate respectfully.",
+      intro: "Explore Australian everyday life, JCU culture and North Queensland events, then share your own practical tip directly with the community.",
       layersTitle: "Understand your new environment in three layers",
       eventsTitle: "North Queensland annual culture calendar",
       tipsTitle: "Tips students will actually use",
@@ -583,7 +583,7 @@ export const copy = {
     market: {
       eyebrow: "STUDENT-TO-STUDENT COMMUNITY",
       title: "Give useful things another life.\nGet small errands done.",
-      intro: "List second-hand items or ask a student on the same campus to pick up one thing along the way. Keep the request, price and handover clear.",
+      intro: "Second-hand listings and pickup requests appear immediately, making useful campus-to-campus exchanges easier to find.",
       sectionTitle: "Community board",
       secondhand: "Second-hand",
       errand: "Bring one thing",
@@ -1447,7 +1447,6 @@ export const studentCultureTips = [
   },
 ];
 
-export const cultureTipSubmissionUrl = "https://github.com/Haodong-Zhang1/Tropic-Loop-Website/issues/new";
 
 export const jcuCourseAreas = [
   {

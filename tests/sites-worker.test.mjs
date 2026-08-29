@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 import worker from "../worker/index.js";
 
@@ -41,28 +41,45 @@ test("falls back to index.html for an unknown app route", async () => {
   assert.deepEqual(calls, ["/flow/step-two?source=share", "/index.html"]);
 });
 
-test("does not turn missing API or write requests into the app shell", async () => {
-  for (const request of [
+test("does not turn a missing API into the app shell", async () => {
+  let calls = 0;
+  const response = await worker.fetch(
     new Request("https://example.test/api/missing", { headers: { accept: "application/json" } }),
-    new Request("https://example.test/flow", { method: "POST", headers: { accept: "text/html" } }),
-  ]) {
-    let calls = 0;
-    const response = await worker.fetch(request, {
-      ASSETS: {
-        fetch: async () => {
-          calls += 1;
-          return new Response("missing", { status: 404 });
-        },
-      },
-    });
+    { ASSETS: { fetch: async () => { calls += 1; return new Response("missing", { status: 404 }); } } },
+  );
 
-    assert.equal(response.status, 404);
-    assert.equal(calls, 1);
-  }
+  assert.equal(response.status, 404);
+  assert.equal(response.headers.get("content-type"), "application/json; charset=utf-8");
+  assert.equal(calls, 0);
+});
+
+test("does not turn write requests into the app shell", async () => {
+  let calls = 0;
+  const response = await worker.fetch(
+    new Request("https://example.test/flow", { method: "POST", headers: { accept: "text/html" } }),
+    { ASSETS: { fetch: async () => { calls += 1; return new Response("missing", { status: 404 }); } } },
+  );
+
+  assert.equal(response.status, 404);
+  assert.equal(calls, 1);
+});
+
+test("returns a clear service response when shared community storage is not configured", async () => {
+  let assetCalls = 0;
+  const response = await worker.fetch(new Request("https://example.test/api/tips?campus=cairns"), {
+    ASSETS: { fetch: async () => { assetCalls += 1; return new Response("asset"); } },
+  });
+  assert.equal(response.status, 503);
+  assert.equal(response.headers.get("content-type"), "application/json; charset=utf-8");
+  assert.equal(assetCalls, 0);
 });
 
 test("emits the files required by Sites packaging", async () => {
   await access(new URL("../dist/client/index.html", import.meta.url));
   await access(new URL("../dist/server/index.js", import.meta.url));
   await access(new URL("../dist/.openai/hosting.json", import.meta.url));
+  await access(new URL("../dist/.openai/drizzle/0000_brave_guardian.sql", import.meta.url));
+  const hosting = JSON.parse(await readFile(new URL("../dist/.openai/hosting.json", import.meta.url), "utf8"));
+  assert.equal(hosting.d1, "DB");
+  assert.equal(hosting.r2, "FILES");
 });

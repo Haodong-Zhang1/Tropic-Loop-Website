@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ArrowSquareOut,
   CalendarDots,
   ChatCircleText,
   Compass,
+  Eye,
+  Flag,
   Lightbulb,
   PaperPlaneTilt,
+  Sparkle,
 } from "@phosphor-icons/react";
 import { PageIntro } from "../components/PageIntro.jsx";
 import {
@@ -13,20 +16,54 @@ import {
   copy,
   culturalEvents,
   cultureLayers,
-  cultureTipSubmissionUrl,
   studentCultureTips,
 } from "../data/content.js";
+import {
+  communityErrorMessage,
+  createCultureTip,
+  listCultureTips,
+  markCultureTipViewed,
+  reportCommunityItem,
+} from "../lib/communityApi.js";
 
 const emptyTip = { category: "daily", name: "", tip: "" };
+const popularTipMinimumViews = 5;
+const tipCategoryLabels = {
+  daily: { zh: "日常与交流", en: "Daily life & communication" },
+  study: { zh: "课堂与校园", en: "Study & campus" },
+  event: { zh: "活动与文化", en: "Events & culture" },
+  cairns: { zh: "凯恩斯", en: "Cairns" },
+  townsville: { zh: "汤斯维尔", en: "Townsville" },
+};
 
 export function CulturePage({ locale, campusId }) {
   const [tipForm, setTipForm] = useState(emptyTip);
   const [formError, setFormError] = useState("");
+  const [formMessage, setFormMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [communityTips, setCommunityTips] = useState([]);
+  const [syncMode, setSyncMode] = useState("loading");
   const page = copy[locale].culture;
   const campus = campuses[campusId];
   const events = culturalEvents.filter((event) => event.campus === campusId);
 
-  const submitTip = (event) => {
+  useEffect(() => {
+    let active = true;
+    setSyncMode("loading");
+    listCultureTips(campusId).then((result) => {
+      if (!active) return;
+      setCommunityTips(result.items);
+      setSyncMode(result.mode);
+    });
+    return () => { active = false; };
+  }, [campusId]);
+
+  const popularTips = useMemo(
+    () => [...communityTips].filter((tip) => Number(tip.views) >= popularTipMinimumViews).sort((a, b) => Number(b.views) - Number(a.views)).slice(0, 3),
+    [communityTips],
+  );
+
+  const submitTip = async (event) => {
     event.preventDefault();
     const tip = tipForm.tip.trim();
     if (tip.length < 20) {
@@ -35,12 +72,46 @@ export function CulturePage({ locale, campusId }) {
     }
 
     setFormError("");
-    const title = locale === "zh" ? "[学生 Tip] 文化与生活经验" : "[Student tip] Culture and local life";
-    const body = locale === "zh"
-      ? `校区：${campus.name.zh}\n类别：${tipForm.category}\n署名（可留空）：${tipForm.name.trim() || "匿名"}\n\n经验内容：\n${tip}\n\n我确认这段内容不包含他人隐私、广告或未经证实的安全/签证/法律结论。`
-      : `Campus: ${campus.name.en}\nCategory: ${tipForm.category}\nDisplay name (optional): ${tipForm.name.trim() || "Anonymous"}\n\nTip:\n${tip}\n\nI confirm this contains no private information, advertising or unverified safety, visa or legal claims.`;
-    const url = `${cultureTipSubmissionUrl}?${new URLSearchParams({ title, body }).toString()}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    setFormMessage("");
+    setSubmitting(true);
+    try {
+      const result = await createCultureTip({
+        campus: campusId,
+        category: tipForm.category,
+        name: tipForm.name.trim() || (locale === "zh" ? "匿名同学" : "Anonymous student"),
+        tip,
+      });
+      setCommunityTips((items) => [result.item, ...items]);
+      setSyncMode(result.mode);
+      setTipForm(emptyTip);
+      setFormMessage(
+        result.mode === "shared"
+          ? (locale === "zh" ? "已发布，其他同学现在就能看到。" : "Published — other students can see it now.")
+          : (locale === "zh" ? "已立即显示；当前预览仅保存在这台设备。" : "Shown instantly; this preview is stored on this device."),
+      );
+    } catch (error) {
+      setFormError(communityErrorMessage(error, locale));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const openTip = async (tipId) => {
+    try {
+      const result = await markCultureTipViewed(tipId);
+      setCommunityTips((items) => items.map((tip) => tip.id === tipId ? { ...tip, views: result.views } : tip));
+    } catch (error) {
+      setFormError(communityErrorMessage(error, locale));
+    }
+  };
+
+  const reportTip = async (tipId) => {
+    try {
+      await reportCommunityItem("tip", tipId);
+      setFormMessage(locale === "zh" ? "已收到举报，谢谢你帮助维护社区。" : "Report received. Thanks for helping keep the community useful.");
+    } catch (error) {
+      setFormError(communityErrorMessage(error, locale));
+    }
   };
 
   return (
@@ -128,7 +199,32 @@ export function CulturePage({ locale, campusId }) {
             <span className="study-kicker">STUDENT-TO-STUDENT</span>
             <h2 id="culture-tips-heading">{page.tipsTitle}</h2>
           </div>
-          <p>{locale === "zh" ? "首批内容由 Tropic Loop 按真实高频场景整理；后续逐条加入经过核实的学长学姐投稿。" : "The first set is curated around common situations; verified student submissions can be added over time."}</p>
+          <p>{locale === "zh" ? "编辑整理与同学投稿放在一起。每位访客的有效浏览会计入热度；达到 5 次后，Tip 会在气泡区浮现。" : "Editorial and student tips sit together. Valid visitor views build popularity; a Tip floats into the bubble area after five views."}</p>
+        </div>
+
+        <div className={`tip-bubble-stage${popularTips.length ? " has-popular-tips" : ""}`}>
+          <div className="tip-bubble-heading">
+            <span><Sparkle size={18} weight="fill" />{locale === "zh" ? "正在浮现" : "Bubbling up"}</span>
+            <small>{locale === "zh" ? "5 次有效浏览后自动浮现" : "Appears after five valid views"}</small>
+          </div>
+          {popularTips.length ? (
+            <div className="tip-bubble-field">
+              {popularTips.map((tip, index) => (
+                <button
+                  type="button"
+                  className="popular-tip-bubble"
+                  style={{ "--bubble-index": index }}
+                  key={tip.id}
+                  onClick={() => openTip(tip.id)}
+                >
+                  <strong>{tip.tip}</strong>
+                  <span><Eye size={14} />{tip.views}</span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            <p className="tip-bubble-empty">{locale === "zh" ? "投稿达到 5 次有效浏览后，热门内容会像气泡一样轻轻浮现。" : "After five valid views, popular contributions will float up here like bubbles."}</p>
+          )}
         </div>
 
         <div className="student-tip-grid">
@@ -142,6 +238,21 @@ export function CulturePage({ locale, campusId }) {
               <p>{tip.detail[locale]}</p>
             </article>
           ))}
+          {communityTips.map((tip) => (
+            <article className="community-tip-card" key={tip.id}>
+              <button type="button" className="tip-open-button" onClick={() => openTip(tip.id)}>
+                <span className="tip-card-meta">
+                  <span>{tip.name || (locale === "zh" ? "匿名同学" : "Anonymous student")}</span>
+                  <span><Eye size={14} />{tip.views}</span>
+                </span>
+                <h3>{tip.tip}</h3>
+                <p>{campus.name[locale]} · {tipCategoryLabels[tip.category]?.[locale] || tip.category}</p>
+              </button>
+              <button type="button" className="tip-report-button" onClick={() => reportTip(tip.id)}>
+                <Flag size={14} />{locale === "zh" ? "举报" : "Report"}
+              </button>
+            </article>
+          ))}
         </div>
       </section>
 
@@ -150,8 +261,8 @@ export function CulturePage({ locale, campusId }) {
           <Compass size={34} weight="duotone" aria-hidden="true" />
           <span className="study-kicker">COMMUNITY CONTRIBUTION</span>
           <h2 id="culture-contribute-heading">{page.contributeTitle}</h2>
-          <p>{locale === "zh" ? "写下“什么场景、踩过什么坑、下一位同学该怎么做”。提交后会打开 Tropic Loop 的公开 GitHub Issue，由作者核实来源、隐私和时效后再发布。" : "Explain the situation, what went wrong and what the next student should do. Submission opens a public Tropic Loop GitHub issue for privacy, accuracy and freshness review before publication."}</p>
-          <small>{locale === "zh" ? "当前需要 GitHub 账号；不会自动出现在网站，也不接受商业软文。" : "A GitHub account is currently required. Tips are not auto-published and promotional posts are not accepted."}</small>
+          <p>{locale === "zh" ? "写下“什么场景、踩过什么坑、下一位同学该怎么做”。无需 GitHub 账号或人工审核，提交成功后立即显示。" : "Explain the situation, what went wrong and what the next student should do. No GitHub account or manual review is required; successful submissions appear immediately."}</p>
+          <small>{locale === "zh" ? "请不要公开隐私、广告或未经证实的安全、签证和法律结论；异常内容可以举报。" : "Do not post private information, advertising or unverified safety, visa or legal claims. Problematic content can be reported."}</small>
         </div>
 
         <form className="culture-tip-form" onSubmit={submitTip}>
@@ -174,11 +285,17 @@ export function CulturePage({ locale, campusId }) {
             <textarea value={tipForm.tip} maxLength={800} rows={6} onChange={(event) => setTipForm({ ...tipForm, tip: event.target.value })} placeholder={locale === "zh" ? "例如：第一次参加 Cairns Show 前，应该提前确认什么……" : "For example: before attending Cairns Show for the first time, check…"} />
           </label>
           {formError && <p className="culture-form-error" role="alert">{formError}</p>}
-          <button type="submit">
+          <button type="submit" disabled={submitting}>
             <PaperPlaneTilt size={18} weight="fill" aria-hidden="true" />
-            {locale === "zh" ? "提交给作者审核" : "Send for review"}
+            {submitting ? (locale === "zh" ? "正在发布…" : "Publishing…") : (locale === "zh" ? "立即发布" : "Publish now")}
           </button>
+          {formMessage && <p className="culture-form-success" role="status">{formMessage}</p>}
           <p><ChatCircleText size={16} aria-hidden="true" />{locale === "zh" ? "请不要填写手机号、住址、学生证或他人隐私。" : "Do not include phone numbers, addresses, student IDs or another person's private information."}</p>
+          <span className={`community-sync-state ${syncMode}`}>
+            {syncMode === "shared"
+              ? (locale === "zh" ? "已连接共享社区" : "Connected to the shared community")
+              : (locale === "zh" ? "本地预览模式" : "Local preview mode")}
+          </span>
         </form>
       </section>
     </>
