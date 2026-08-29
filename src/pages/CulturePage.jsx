@@ -66,8 +66,8 @@ export function CulturePage({ locale, campusId }) {
   const submitTip = async (event) => {
     event.preventDefault();
     const tip = tipForm.tip.trim();
-    if (tip.length < 20) {
-      setFormError(locale === "zh" ? "请至少写 20 个字，把场景和建议说明清楚。" : "Please give at least 20 characters of context and advice.");
+    if (!tip) {
+      setFormError(locale === "zh" ? "请写下你的 Tip。" : "Please write your tip.");
       return;
     }
 

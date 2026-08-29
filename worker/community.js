@@ -28,7 +28,7 @@ export function validateTipPayload(payload) {
 
   if (!CAMPUSES.has(campus)) return { ok: false, message: "Choose a valid campus." };
   if (!TIP_CATEGORIES.has(category)) return { ok: false, message: "Choose a valid category." };
-  if (tip.length < 20) return { ok: false, message: "Tips need at least 20 characters." };
+  if (!tip) return { ok: false, message: "Write a tip before publishing." };
   if (/https?:\/\/|www\.|\b\S+@\S+\.\S+\b/i.test(tip)) {
     return { ok: false, message: "Tips cannot include links or contact details." };
   }

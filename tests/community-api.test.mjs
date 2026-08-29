@@ -13,6 +13,11 @@ test("accepts a clear student tip without requiring manual review metadata", () 
   assert.equal(result.value.campus, "cairns");
 });
 
+test("accepts short tips but still rejects empty submissions", () => {
+  assert.equal(validateTipPayload({ campus: "cairns", category: "daily", tip: "带伞" }).ok, true);
+  assert.equal(validateTipPayload({ campus: "cairns", category: "daily", tip: "   " }).ok, false);
+});
+
 test("rejects links and contact details inside tips", () => {
   for (const tip of [
     "Read my complete guide at https://example.com before you arrive on campus.",
