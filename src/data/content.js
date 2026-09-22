@@ -413,7 +413,7 @@ export const copy = {
       newsTitle: "校园新闻与活动",
       newsIntro: "按当前校区筛选近期内容，摘要由 Tropic Loop 整理，详情回到 JCU 官方页面。",
       allNews: "查看全部 JCU 新闻",
-      newsUpdated: "内容更新于 2026 年 9 月 19 日",
+      newsUpdated: "内容更新于 2026 年 9 月 22 日",
       exploreTitle: "从校园开始",
       exploreIntro: "官方校园信息、住宿与创新空间，一次找到正确入口。",
     },
@@ -521,7 +521,7 @@ export const copy = {
       newsTitle: "Campus news and events",
       newsIntro: "Recent stories are filtered by campus, summarised by Tropic Loop and linked back to the official JCU page.",
       allNews: "View all JCU news",
-      newsUpdated: "Content updated 19 September 2026",
+      newsUpdated: "Content updated 22 September 2026",
       exploreTitle: "Start with the campus",
       exploreIntro: "Official campus information, housing and innovation spaces with the right next link.",
     },
@@ -628,6 +628,16 @@ export const weeklyItems = [
 
 export const campusNews = [
   {
+    id: "power-up-day-foodbank-townsville-2026",
+    campus: "townsville",
+    date: "2026-10-14",
+    dateLabel: { zh: "10 月 14 日 · 11:00–13:00", en: "14 Oct · 11am–1pm" },
+    category: { zh: "学生支持与免费食物", en: "Student support and free food" },
+    title: { zh: "Power Up Day 汤斯维尔：考前午餐与食品支持", en: "Power Up Day Townsville: pre-exam lunch and food support" },
+    summary: { zh: "在汤斯维尔校区 143 楼 Central Plaza 享用免费午餐，并领取可带回家的食品；现场还有音乐与同学交流。", en: "Fuel up before exams with a free lunch and food items to take home at Central Plaza, Building 143, with live music and student connection." },
+    url: "https://www.jcu.edu.au/events/2026/september/lets-lunch-foodbank",
+  },
+  {
     id: "networking-at-nite-cairns-2026",
     campus: "cairns",
     date: "2026-10-01",
@@ -646,16 +656,6 @@ export const campusNews = [
     title: { zh: "Networking @ Nite 汤斯维尔：连接同学、教师与行业伙伴", en: "Networking @ Nite Townsville: connect with students, academics and industry" },
     summary: { zh: "在汤斯维尔校区 506 楼 Engineering and Innovation Place 举行的免费交流活动，面向在校生；报名于 9 月 28 日 17:00 截止。", en: "A free networking event for current students at Engineering and Innovation Place, Building 506; registrations close at 5pm on 28 September." },
     url: "https://www.jcu.edu.au/events/2026/october/networking-%40-nite-townsville",
-  },
-  {
-    id: "networking-101-linkedin-townsville-2026",
-    campus: "townsville",
-    date: "2026-09-30",
-    dateLabel: { zh: "9 月 30 日 · 12:00", en: "30 Sep · 12pm" },
-    category: { zh: "职业技能工作坊", en: "Career skills workshop" },
-    title: { zh: "Networking 101 + LinkedIn：建立职业形象与人脉", en: "Networking 101 + LinkedIn: build your professional profile" },
-    summary: { zh: "在汤斯维尔校区 142 楼 022 室学习建立职业联系和优化 LinkedIn 主页；需通过 JCU CareerHub 预约。", en: "Build professional connections and strengthen your LinkedIn profile in Townsville Building 142, Room 022; booking is through JCU CareerHub." },
-    url: "https://www.jcu.edu.au/careers-and-employability/Events-Training-and-Workshops",
   },
   {
     id: "lets-lunch-cairns-2026",
