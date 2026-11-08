@@ -413,7 +413,7 @@ export const copy = {
       newsTitle: "校园新闻与活动",
       newsIntro: "按当前校区筛选近期内容，摘要由 Tropic Loop 整理，详情回到 JCU 官方页面。",
       allNews: "查看全部 JCU 新闻",
-      newsUpdated: "内容更新于 2026 年 11 月 6 日",
+      newsUpdated: "内容更新于 2026 年 11 月 8 日",
       exploreTitle: "从校园开始",
       exploreIntro: "官方校园信息、住宿与创新空间，一次找到正确入口。",
     },
@@ -521,7 +521,7 @@ export const copy = {
       newsTitle: "Campus news and events",
       newsIntro: "Recent stories are filtered by campus, summarised by Tropic Loop and linked back to the official JCU page.",
       allNews: "View all JCU news",
-      newsUpdated: "Content updated 6 November 2026",
+      newsUpdated: "Content updated 8 November 2026",
       exploreTitle: "Start with the campus",
       exploreIntro: "Official campus information, housing and innovation spaces with the right next link.",
     },
@@ -628,6 +628,16 @@ export const weeklyItems = [
 
 export const campusNews = [
   {
+    id: "trimester-3-final-mystudent-withdrawal-2026",
+    campus: "both",
+    date: "2026-11-28",
+    dateLabel: { zh: "11 月 28 日 · MyStudent 最后在线退课日", en: "28 Nov · final MyStudent withdrawal date" },
+    category: { zh: "Trimester 3 重要日期", en: "Trimester 3 key date" },
+    title: { zh: "11 月 28 日：Trimester 3 最后 MyStudent 退课日期", en: "28 November: final Trimester 3 MyStudent withdrawal date" },
+    summary: { zh: "这不是无处罚截止日：Census Date 已于 10 月 8 日结束，无学术处罚退课期已于 10 月 23 日结束。JCU 明确说明，此时退课仍需承担费用并产生学术责任；退课前请先确认影响，必要时联系 Student Centre。", en: "This is not a penalty-free deadline. Census passed on 8 October and withdrawal without academic penalty ended on 23 October. JCU states that students withdrawing now remain financially and academically liable; check the impact and contact the Student Centre first." },
+    url: "https://www.jcu.edu.au/students/academic-calendars/academic-calendars-2026/Trimesters.pdf",
+  },
+  {
     id: "semester-2-exam-timetable-2026",
     campus: "both",
     date: "2026-11-07",
@@ -636,16 +646,6 @@ export const campusNews = [
     title: { zh: "Semester 2 个人考试时间表已发布", en: "Semester 2 personal exam timetable is now available" },
     summary: { zh: "请检查 JCU 邮箱或 JCU Student App，确认考试日期、时间、校区、考场、考试条件与允许携带的材料。", en: "Check your JCU email or the JCU Student App and confirm each exam's date, time, campus, venue, conditions and permitted materials." },
     url: "https://www.jcu.edu.au/students/assessment-and-results/formal-examinations/exam-dates-and-timetable",
-  },
-  {
-    id: "semester-2-final-mystudent-withdrawal-2026",
-    campus: "both",
-    date: "2026-11-06",
-    dateLabel: { zh: "11 月 6 日 · MyStudent 最后在线退课日", en: "6 Nov · final MyStudent withdrawal date" },
-    category: { zh: "Semester 2 重要日期", en: "Semester 2 key date" },
-    title: { zh: "11 月 6 日：Semester 2 最后 MyStudent 退课日期", en: "6 November: final Semester 2 MyStudent withdrawal date" },
-    summary: { zh: "这不是无处罚截止日：Census Date 和无学术处罚退课期均已结束。JCU 明确说明，此时退课仍需承担费用并产生学术责任；退课前请先确认影响，必要时联系 Student Centre。", en: "This is not a penalty-free deadline. JCU states that students withdrawing at this stage remain financially and academically liable. Check the impact and contact the Student Centre before withdrawing." },
-    url: "https://www.jcu.edu.au/students/academic-calendars/academic-calendars-2026/Semester-2.pdf",
   },
   {
     id: "trimester-3-exam-timetable-2026",
